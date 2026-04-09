@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMART WINGS: CPES — SDO Sipalay City</title>
+<style>
+/* ============================================================
+   CPES Design System
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fafaf9;--surface:#fff;--surface-2:#f5f5f4;--border:#e7e5e4;
+  --text:#1c1917;--text-2:#78716c;--text-3:#a8a29e;
+  --accent:#1d4ed8;--accent-light:#dbeafe;--accent-dark:#1e3a8a;
+  --success:#16a34a;--success-bg:#dcfce7;
+  --warning:#d97706;--warning-bg:#fef3c7;
+  --danger:#dc2626;--danger-bg:#fee2e2;
+  --info:#0891b2;--info-bg:#cffafe;
+  --deped-blue:#003893;--deped-yellow:#f5a623;
+  --sidebar-w:240px;--sidebar-bg:#1c1917;
+  --radius:8px;--radius-lg:12px;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.06);
+  --shadow:0 1px 3px rgba(0,0,0,.10),0 1px 2px rgba(0,0,0,.06);
+  --shadow-md:0 4px 6px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 15px rgba(0,0,0,.10),0 4px 6px rgba(0,0,0,.05);
+}
+html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:inherit}
+input,select,textarea{font-family:inherit}
+
+/* Shell */
+.app-shell{display:flex;height:100vh;overflow:hidden}
+
+/* Sidebar */
+.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--sidebar-bg);display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;z-index:100}
+.sidebar::-webkit-scrollbar{display:none}
+.sidebar-brand{padding:1.125rem 1rem;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:.625rem}
+.sidebar-brand-logo{width:36px;height:36px;background:var(--deped-yellow);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;color:var(--deped-blue);flex-shrink:0;letter-spacing:-.5px}
+.sidebar-brand-title{font-size:12px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sidebar-brand-sub{font-size:10px;color:var(--text-3);white-space:nowrap}
+.sidebar-section-label{padding:.5rem 1rem .2rem;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-3)}
+.sidebar-nav{list-style:none}
+.sidebar-link{display:flex;align-items:center;gap:.5rem;padding:.45rem 1rem;font-size:13px;font-weight:500;color:#d6d3d1;border-radius:6px;margin:1px .5rem;transition:background .12s,color .12s;position:relative;cursor:pointer}
+.sidebar-link:hover{background:rgba(255,255,255,.07);color:#fff}
+.sidebar-link.active{background:rgba(245,166,35,.15);color:var(--deped-yellow)}
+.sidebar-link.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:60%;background:var(--deped-yellow);border-radius:0 2px 2px 0}
+.sidebar-badge{margin-left:auto;background:var(--deped-yellow);color:var(--deped-blue);font-size:10px;font-weight:700;padding:1px 5px;border-radius:10px}
+.sidebar-footer{margin-top:auto;padding:.875rem 1rem;border-top:1px solid rgba(255,255,255,.08)}
+.sidebar-user{display:flex;align-items:center;gap:.5rem}
+.sidebar-avatar{width:30px;height:30px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.sidebar-user-name{font-size:12px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.sidebar-user-role{font-size:10px;color:var(--text-3)}
+.logout-btn{background:none;border:none;color:var(--text-3);padding:4px;border-radius:4px;font-size:16px;line-height:1;cursor:pointer}
+.logout-btn:hover{color:var(--danger)}
+
+/* Main */
+.main-content{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden}
+.topbar{height:52px;min-height:52px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:1rem;padding:0 1.25rem}
+.topbar-breadcrumb{font-size:12px;color:var(--text-3);display:flex;align-items:center;gap:.375rem;flex:1}
+.topbar-current{color:var(--text-2);font-weight:500}
+.topbar-school{font-size:12px;color:var(--text-3)}
+.page-wrapper{flex:1;overflow-y:auto;overflow-x:hidden;padding:1.375rem}
+.page-wrapper::-webkit-scrollbar{width:5px}
+.page-wrapper::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* Page header */
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1.375rem}
+.page-title{font-size:19px;font-weight:700;color:var(--text);letter-spacing:-.3px}
+.page-subtitle{font-size:12px;color:var(--text-2);margin-top:.2rem}
+
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm)}
+.card-header{padding:.875rem 1.125rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.card-title{font-size:13px;font-weight:600}
+.card-body{padding:1.125rem}
+
+/* Stat grid */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:.875rem;margin-bottom:1.375rem}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.125rem;box-shadow:var(--shadow-sm);position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.stat-card.blue::before{background:var(--accent)}
+.stat-card.green::before{background:var(--success)}
+.stat-card.yellow::before{background:var(--warning)}
+.stat-card.cyan::before{background:var(--info)}
+.stat-card.red::before{background:var(--danger)}
+.stat-card.purple::before{background:#7c3aed}
+.stat-label{font-size:11px;font-weight:500;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.25rem}
+.stat-value{font-size:24px;font-weight:700;letter-spacing:-1px;line-height:1}
+.stat-sub{font-size:11px;color:var(--text-3);margin-top:.2rem}
+
+/* FA grid */
+.fa-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:.875rem}
+.fa-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.125rem;display:flex;flex-direction:column;gap:.625rem;box-shadow:var(--shadow-sm);transition:box-shadow .15s,transform .15s;cursor:pointer}
+.fa-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.fa-card-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.fa-card-icon.blue{background:var(--accent-light)}
+.fa-card-icon.green{background:var(--success-bg)}
+.fa-card-icon.yellow{background:var(--warning-bg)}
+.fa-card-icon.cyan{background:var(--info-bg)}
+.fa-card-icon.red{background:var(--danger-bg)}
+.fa-card-icon.purple{background:#ede9fe}
+.fa-card-num{font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text-3)}
+.fa-card-title{font-size:13px;font-weight:600}
+.fa-card-desc{font-size:12px;color:var(--text-2);line-height:1.5}
+.fa-card-footer{margin-top:auto;display:flex;align-items:center;justify-content:space-between}
+.fa-card-count{font-size:11px;color:var(--text-3)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:.35rem;padding:.45rem .875rem;font-size:13px;font-weight:500;border-radius:6px;border:1px solid transparent;transition:background .12s,border-color .12s;white-space:nowrap;line-height:1.4;cursor:pointer}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-primary:hover:not(:disabled){background:var(--accent-dark);border-color:var(--accent-dark)}
+.btn-secondary{background:var(--surface-2);color:var(--text);border-color:var(--border)}
+.btn-secondary:hover:not(:disabled){background:var(--border)}
+.btn-danger{background:var(--danger);color:#fff;border-color:var(--danger)}
+.btn-ghost{background:transparent;color:var(--text-2);border-color:transparent}
+.btn-ghost:hover:not(:disabled){background:var(--surface-2);color:var(--text)}
+.btn-sm{padding:.3rem .625rem;font-size:12px}
+.btn-lg{padding:.7rem 1.375rem;font-size:14px}
+.btn-block{width:100%;justify-content:center}
+.text-danger-btn{color:var(--danger)}
+
+/* Forms */
+.form-group{display:flex;flex-direction:column;gap:.3rem}
+.form-label{font-size:12px;font-weight:600;color:var(--text)}
+.required{color:var(--danger);margin-left:2px}
+.form-control{width:100%;padding:.45rem .7rem;font-size:13px;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:6px;transition:border-color .12s,box-shadow .12s;outline:none;appearance:none;-webkit-appearance:none}
+.form-control:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(29,78,216,.1)}
+.form-control::placeholder{color:var(--text-3)}
+select.form-control{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2378716c' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .625rem center;padding-right:2rem}
+textarea.form-control{resize:vertical;min-height:72px}
+.form-hint{font-size:11px;color:var(--text-3)}
+.form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.875rem}
+.form-section{display:flex;flex-direction:column;gap:.75rem}
+.form-section-title{font-size:11px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;padding-bottom:.4rem;border-bottom:1px solid var(--border)}
+
+/* Table */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{padding:.55rem .8rem;text-align:left;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-3);background:var(--surface-2);border-bottom:1px solid var(--border);white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--border)}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:var(--surface-2)}
+tbody td{padding:.55rem .8rem;color:var(--text);vertical-align:middle}
+.td-muted{color:var(--text-2);font-size:12px}
+
+/* Badges */
+.badge{display:inline-flex;align-items:center;padding:2px 7px;font-size:11px;font-weight:600;border-radius:20px}
+.badge-blue{background:var(--accent-light);color:var(--accent-dark)}
+.badge-green{background:var(--success-bg);color:var(--success)}
+.badge-yellow{background:var(--warning-bg);color:var(--warning)}
+.badge-red{background:var(--danger-bg);color:var(--danger)}
+.badge-gray{background:var(--surface-2);color:var(--text-2)}
+.badge-cyan{background:var(--info-bg);color:var(--info)}
+.badge-purple{background:#ede9fe;color:#7c3aed}
+
+/* Tabs */
+.tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:1.125rem}
+.tab-btn{padding:.55rem .875rem;font-size:13px;font-weight:500;color:var(--text-2);background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;transition:color .12s,border-color .12s}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:500;padding:1rem;opacity:0;pointer-events:none;transition:opacity .15s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);width:100%;max-width:620px;max-height:90vh;display:flex;flex-direction:column;transform:translateY(10px);transition:transform .15s}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-header{padding:1rem 1.125rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-shrink:0}
+.modal-title{font-size:14px;font-weight:600}
+.modal-close{background:none;border:none;color:var(--text-3);padding:3px 6px;border-radius:4px;font-size:16px;line-height:1;cursor:pointer}
+.modal-close:hover{color:var(--text);background:var(--surface-2)}
+.modal-body{padding:1.125rem;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:.75rem}
+.modal-footer{padding:.75rem 1.125rem;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:.5rem;flex-shrink:0}
+
+/* Auth */
+.auth-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#003893 0%,#1e3a8a 50%,#1d4ed8 100%);padding:1rem}
+.auth-card{background:var(--surface);border-radius:16px;box-shadow:var(--shadow-lg);width:100%;max-width:400px;padding:1.875rem}
+.auth-logo{display:flex;align-items:center;justify-content:center;gap:.75rem;margin-bottom:1.625rem}
+.auth-logo-mark{width:48px;height:48px;background:var(--deped-yellow);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:var(--deped-blue);flex-shrink:0}
+.auth-logo-title{font-size:16px;font-weight:800;color:var(--text)}
+.auth-logo-sub{font-size:10px;color:var(--text-2)}
+.auth-heading{font-size:18px;font-weight:700;margin-bottom:.25rem}
+.auth-sub{font-size:12px;color:var(--text-2);margin-bottom:1.25rem}
+.auth-form{display:flex;flex-direction:column;gap:.875rem}
+.auth-switch{text-align:center;font-size:12px;color:var(--text-2);margin-top:1rem}
+.auth-switch a{color:var(--accent);font-weight:500;cursor:pointer}
+.auth-demo{margin-top:1.25rem;padding:.875rem;background:var(--surface-2);border-radius:8px;font-size:11px;color:var(--text-2);text-align:center;line-height:1.8}
+
+/* Alerts */
+.alert{display:flex;gap:.5rem;padding:.7rem .875rem;border-radius:var(--radius);font-size:13px;border:1px solid transparent;margin-top:.25rem}
+.alert-info{background:var(--info-bg);border-color:#a5f3fc;color:#164e63}
+.alert-success{background:var(--success-bg);border-color:#86efac;color:#14532d}
+.alert-danger{background:var(--danger-bg);border-color:#fca5a5;color:#7f1d1d}
+
+/* Search */
+.search-bar{display:flex;align-items:center;gap:.4rem;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:.35rem .7rem}
+.search-bar:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(29,78,216,.08)}
+.search-bar input{border:none;outline:none;background:transparent;font-size:13px;color:var(--text);width:190px}
+.search-bar input::placeholder{color:var(--text-3)}
+
+/* Empty state */
+.empty-state{display:flex;flex-direction:column;align-items:center;gap:.625rem;padding:2.5rem 1rem;text-align:center;color:var(--text-3)}
+.empty-icon{font-size:36px;opacity:.35}
+.empty-title{font-size:13px;font-weight:600;color:var(--text-2)}
+.empty-desc{font-size:12px;max-width:260px}
+
+/* Utilities */
+.flex{display:flex}.items-center{align-items:center}.justify-between{justify-content:space-between}
+.gap-2{gap:.5rem}.mt-4{margin-top:1rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}
+.w-full{width:100%}.hidden{display:none!important}.text-muted{color:var(--text-2)}
+.divider{height:1px;background:var(--border);margin:.875rem 0}
+.access-denied{max-width:480px;margin:2rem auto}
+
+@keyframes fadeInUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeInUp .2s ease}
+
+/* View button */
+.btn-outline-info{background:transparent;border:1px solid var(--info);color:var(--info);font-size:11px;padding:3px 8px;border-radius:4px;font-weight:500}
+.btn-outline-info:hover{background:var(--info-bg)}
+
+/* Record detail view */
+.view-detail-grid{display:grid;gap:.5rem}
+.view-detail-row{display:grid;grid-template-columns:160px 1fr;gap:.75rem;padding:.5rem 0;border-bottom:1px solid var(--border)}
+.view-detail-row:last-child{border-bottom:none}
+.view-detail-label{font-size:12px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.04em;padding-top:2px}
+.view-detail-val{font-size:13px;color:var(--text);word-break:break-word}
+</style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script>
+// ============================================================
+// CPES — Single File Application
+// ============================================================
+
+// ---------- STORE (in-memory + sessionStorage) ----------------
+var Store = (function() {
+  var KEY = 'cpes_v1';
+  var defaults = {
+    users: [
+      {id:'u1',name:'Mark E. Caballes',email:'mark.caballes@deped.gov.ph',role:'Admin',school:'SDO Sipalay City',status:'Active',createdAt:'2026-01-01',password:'admin123'},
+      {id:'u2',name:'Mary L. Domingo',email:'mary.domingo@deped.gov.ph',role:'Editor',school:'SDO Sipalay City',status:'Active',createdAt:'2026-01-01',password:'editor123'},
+      {id:'u3',name:'Joan Sayson',email:'joan.sayson@deped.gov.ph',role:'Viewer',school:'Sipalay City NHS',status:'Active',createdAt:'2026-01-02',password:'viewer123'}
+    ],
+    transmittals:[
+      {id:'t1',school:'Agripino Alvarez ES',month:'January',year:'2026',cluster:'1',contributionType:'Cash',numPartners:3,amountContribution:101324,numBeneficiaries:150,status:'Submitted',createdAt:'2026-01-15'},
+      {id:'t2',school:'Barangay 5 ES',month:'January',year:'2026',cluster:'2',contributionType:'In-Kind',numPartners:2,amountContribution:25000,numBeneficiaries:80,status:'Validated',createdAt:'2026-01-18'}
+    ],
+    research:[
+      {id:'r1',title:'Action Research on Partnership Impact',type:'Action Research',author:'Mark E. Caballes',school:'SDO Sipalay City',year:'2026',status:'Published',abstract:'Study on SDO partnership effectiveness.',createdAt:'2026-02-01'}
+    ],
+    donations:[
+      {id:'d1',school:'Leodegario Ponce Gonzales NHS',quarter:'Q1',month:'January',year:'2026',donationType:'In-Kind',description:'10 Snare Drums',amount:0,donorName:'LGU of Sipalay City',hasMOA:'Yes',notarizedDate:'',usageDescription:'For Drum and Bugle Corps',status:'Encoded',createdAt:'2026-01-15'}
+    ],
+    etmrs:[
+      {id:'e1',school:'Agripino Alvarez ES',cluster:'1',month:'January',year:'2026',totalPartners:3,totalAmount:101324,totalBeneficiaries:150,schoolHeadSignature:'Vivien T. Bretania',submittedDate:'2026-01-20',status:'Uploaded',createdAt:'2026-01-20'}
+    ],
+    certifications:[
+      {id:'c1',school:'Agripino Alvarez ES',schoolHead:'Vivien T. Bretania',partnerName:'LGU Sipalay City',amountReceived:101324,pointsEarned:10,programYear:'2026',quarter:'Q1',certDate:'2026-02-01',hiyas:'Yes',status:'Issued',createdAt:'2026-02-01'}
+    ],
+    agreements:[
+      {id:'ag1',school:'Sipalay City NHS',cluster:'3',agreementType:'MOA',partnerName:'Silliman University',partnerRep:'University President',purpose:'Library book donation',effectivityStart:'2026-01-01',effectivityEnd:'2027-12-31',notarized:'Yes',notarizedDate:'2026-01-15',status:'Active',createdAt:'2026-01-15'}
+    ],
+    session:null
+  };
+
+  var mem = null;
+
+  function load() {
+    try {
+      var raw = sessionStorage.getItem(KEY);
+      if (raw) {
+        mem = JSON.parse(raw);
+        // ensure all keys exist
+        Object.keys(defaults).forEach(function(k){ if(!(k in mem)) mem[k]=defaults[k]; });
+      } else {
+        mem = JSON.parse(JSON.stringify(defaults));
+      }
+    } catch(e) {
+      mem = JSON.parse(JSON.stringify(defaults));
+    }
+  }
+
+  function save() {
+    try { sessionStorage.setItem(KEY, JSON.stringify(mem)); } catch(e) {}
+  }
+
+  function get(key) { return mem[key]; }
+  function set(key, value) { mem[key] = value; save(); }
+  function nextId(p) { return p + Date.now().toString(36) + Math.random().toString(36).slice(2,5); }
+
+  return { load:load, save:save, get:get, set:set, nextId:nextId };
+})();
+
+
+// ---------- AUTH -----------------------------------------------
+var Auth = {
+  login: function(email, password) {
+    var users = Store.get('users');
+    var user = null;
+    for (var i=0;i<users.length;i++) {
+      if (users[i].email===email && users[i].password===password && users[i].status==='Active') { user=users[i]; break; }
+    }
+    if (!user) return false;
+    var s = {userId:user.id,name:user.name,role:user.role,school:user.school};
+    Store.set('session',s);
+    return s;
+  },
+  logout: function() { Store.set('session',null); Router.go('login'); },
+  session: function() { return Store.get('session'); },
+  check: function() { var s=this.session(); if(!s){Router.go('login');return null;} return s; },
+  can: function(action) {
+    var s=this.session(); if(!s) return false;
+    if(s.role==='Admin') return true;
+    if(s.role==='Editor') return action==='view'||action==='create'||action==='edit';
+    return action==='view';
+  }
+};
+
+
+// ---------- ROUTER ---------------------------------------------
+var Router = {
+  routes: {},
+  register: function(name, fn) { this.routes[name]=fn; },
+  go: function(name, params) {
+    params = params||{};
+    var fn = this.routes[name];
+    if (!fn) { console.error('No route: '+name); return; }
+    this.current = name;
+    // update sidebar active
+    var links = document.querySelectorAll('.sidebar-link');
+    for (var i=0;i<links.length;i++) links[i].classList.toggle('active', links[i].getAttribute('data-route')===name);
+    // update breadcrumb
+    var bc = document.getElementById('topbarCurrent');
+    if (bc) bc.textContent = Router.titles[name]||name;
+    var root = document.getElementById('app');
+    if (root) { root.innerHTML=''; }
+    fn(root, params);
+  },
+  titles: {
+    dashboard:'Dashboard',fa1:'FA1 — Transmittal Reports',fa2:'FA2 — Research & Innovation',
+    fa3:'FA3 — Donation Reports',fa4:'FA4 — ETMRS Repository',fa5:'FA5 — Certifications',
+    fa6:'FA6 — MOA/MOU/DOD/DOA',users:'User Management'
+  }
+};
+
+
+// ---------- HELPERS --------------------------------------------
+var H = {
+  esc: function(s) {
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  },
+  badge: function(text, color) {
+    color = color||'gray';
+    return '<span class="badge badge-'+color+'">'+H.esc(text)+'</span>';
+  },
+  statusBadge: function(s) {
+    var m={Active:'green',Submitted:'blue',Validated:'green',Pending:'yellow',Uploaded:'cyan',
+           Issued:'green',Published:'green',Draft:'gray',Inactive:'red',Encoded:'blue',
+           Approved:'green',Rejected:'red',Expired:'red',Cancelled:'red'};
+    return H.badge(s, m[s]||'gray');
+  },
+  currency: function(n) {
+    n = parseFloat(n)||0;
+    return '₱'+n.toFixed(2).replace(/\d(?=(\d{3})+\.)/g,'$&,');
+  },
+  fmtDate: function(s) {
+    if (!s) return '—';
+    try {
+      var d=new Date(s+'T00:00:00');
+      var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      return months[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear();
+    } catch(e){ return s; }
+  },
+  num: function(n) { return parseInt(n||0).toLocaleString(); },
+  toast: function(msg, type) {
+    type=type||'success';
+    var colors={success:'#16a34a',danger:'#dc2626',warning:'#d97706',info:'#0891b2'};
+    var old=document.querySelector('.cpes-toast'); if(old) old.remove();
+    var t=document.createElement('div');
+    t.className='cpes-toast';
+    t.style.cssText='position:fixed;bottom:1.375rem;right:1.375rem;z-index:9999;background:'+colors[type]+';color:#fff;padding:.6rem 1rem;border-radius:8px;font-size:13px;font-weight:500;box-shadow:0 4px 12px rgba(0,0,0,.25);display:flex;align-items:center;gap:.5rem;max-width:320px;animation:fadeInUp .2s ease';
+    t.innerHTML=(type==='success'?'✓':type==='danger'?'✕':'⚠')+' '+H.esc(msg);
+    document.body.appendChild(t);
+    setTimeout(function(){t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(function(){t.remove()},300);},3000);
+  },
+  modal: function(title, bodyHTML, footerFn) {
+    var ov=document.createElement('div'); ov.className='modal-overlay';
+    ov.innerHTML='<div class="modal"><div class="modal-header"><span class="modal-title">'+H.esc(title)+'</span><button class="modal-close" id="mClose">✕</button></div><div class="modal-body" id="mBody"></div><div class="modal-footer" id="mFoot"></div></div>';
+    document.body.appendChild(ov);
+    document.getElementById('mBody').innerHTML=bodyHTML;
+    requestAnimationFrame(function(){ov.classList.add('open');});
+    function close(){ov.classList.remove('open');setTimeout(function(){if(ov.parentNode)ov.parentNode.removeChild(ov);},200);}
+    document.getElementById('mClose').onclick=close;
+    ov.onclick=function(e){if(e.target===ov)close();};
+    if(footerFn) footerFn(document.getElementById('mFoot'),close);
+    return {close:close};
+  },
+  val: function(id){ return document.getElementById(id).value; },
+  selOpts: function(arr, selected) {
+    return arr.map(function(a){ return '<option value="'+H.esc(a)+'"'+(a===selected?' selected':'')+'>'+H.esc(a)+'</option>'; }).join('');
+  }
+};
+
+
+// ---------- SHELL ----------------------------------------------
+function renderShell() {
+  var s = Auth.session();
+  var initials = s ? s.name.split(' ').map(function(w){return w[0]||'';}).join('').slice(0,2).toUpperCase() : '??';
+  var nav = [
+    {route:'dashboard',icon:'⊞',label:'Dashboard'},
+    {sep:true,label:'Functional Areas'},
+    {route:'fa1',icon:'📋',label:'Transmittal Reports',fa:'1'},
+    {route:'fa2',icon:'🔬',label:'Research & Innovation',fa:'2'},
+    {route:'fa3',icon:'🎁',label:'Donation Reports',fa:'3'},
+    {route:'fa4',icon:'📁',label:'Monthly Reports Repo',fa:'4'},
+    {route:'fa5',icon:'🏅',label:'Certifications',fa:'5'},
+    {route:'fa6',icon:'🤝',label:'MOA / MOU / DOD / DOA',fa:'6'},
+    {sep:true,label:'Administration'},
+    {route:'users',icon:'👥',label:'User Management'}
+  ];
+  var navHTML = nav.map(function(item){
+    if(item.sep) return '<div class="sidebar-section-label">'+H.esc(item.label)+'</div>';
+    return '<ul class="sidebar-nav"><li><div class="sidebar-link" data-route="'+item.route+'">'
+      +'<span style="font-size:15px">'+item.icon+'</span>'
+      +H.esc(item.label)
+      +(item.fa?'<span class="sidebar-badge">FA'+item.fa+'</span>':'')
+      +'</div></li></ul>';
+  }).join('');
+
+  document.getElementById('root').innerHTML =
+    '<div class="app-shell">'
+    +'<aside class="sidebar">'
+      +'<div class="sidebar-brand">'
+        +'<div class="sidebar-brand-logo">SW</div>'
+        +'<div><div class="sidebar-brand-title">SMART WINGS: CPES</div><div class="sidebar-brand-sub">SDO Sipalay City</div></div>'
+      +'</div>'
+      +navHTML
+      +'<div class="sidebar-footer"><div class="sidebar-user">'
+        +'<div class="sidebar-avatar">'+initials+'</div>'
+        +'<div style="min-width:0;flex:1">'
+          +'<div class="sidebar-user-name">'+H.esc(s?s.name:'')+'</div>'
+          +'<div class="sidebar-user-role">'+H.esc(s?s.role:'')+'</div>'
+        +'</div>'
+        +'<button class="logout-btn" id="logoutBtn" title="Logout">⏻</button>'
+      +'</div></div>'
+    +'</aside>'
+    +'<div class="main-content">'
+      +'<header class="topbar">'
+        +'<div class="topbar-breadcrumb">CPES <span style="color:var(--border);margin:0 .25rem">›</span> <span class="topbar-current" id="topbarCurrent">Dashboard</span></div>'
+        +'<span class="topbar-school">'+H.esc(s?s.school:'')+'</span>'
+      +'</header>'
+      +'<div class="page-wrapper"><div id="app" class="fade-in"></div></div>'
+    +'</div>'
+    +'</div>';
+
+  document.querySelectorAll('.sidebar-link[data-route]').forEach(function(el){
+    el.onclick=function(){ Router.go(el.getAttribute('data-route')); };
+  });
+  document.getElementById('logoutBtn').onclick=function(){
+    if(confirm('Log out of CPES?')) Auth.logout();
+  };
+}
+
+
+// ---------- LOGIN ----------------------------------------------
+Router.register('login', function(){
+  document.getElementById('root').innerHTML =
+    '<div class="auth-page"><div class="auth-card">'
+    +'<div class="auth-logo"><div class="auth-logo-mark">SW</div><div><div class="auth-logo-title">SMART WINGS: CPES</div><div class="auth-logo-sub">SDO Sipalay City · Negros Island Region</div></div></div>'
+    +'<h1 class="auth-heading">Sign In</h1>'
+    +'<p class="auth-sub">Use your DepEd email account to access the system.</p>'
+    +'<div class="auth-form">'
+      +'<div class="form-group"><label class="form-label">Email Address <span class="required">*</span></label><input class="form-control" id="lEmail" type="email" placeholder="yourname@deped.gov.ph" autocomplete="email"></div>'
+      +'<div class="form-group"><label class="form-label">Password <span class="required">*</span></label><input class="form-control" id="lPw" type="password" placeholder="••••••••" autocomplete="current-password"></div>'
+      +'<div id="lErr" class="hidden"></div>'
+      +'<button class="btn btn-primary btn-block btn-lg" id="lBtn">Sign In</button>'
+    +'</div>'
+    +'<div class="auth-switch">No account? <a id="goReg">Register</a></div>'
+    +'<div class="auth-demo"><strong>Demo accounts:</strong><br>Admin: mark.caballes@deped.gov.ph / admin123<br>Editor: mary.domingo@deped.gov.ph / editor123<br>Viewer: joan.sayson@deped.gov.ph / viewer123</div>'
+    +'</div></div>';
+
+  function doLogin() {
+    var email=H.val('lEmail').trim(), pw=H.val('lPw');
+    var errEl=document.getElementById('lErr');
+    var session=Auth.login(email,pw);
+    if (session) { renderShell(); Router.go('dashboard'); }
+    else {
+      errEl.className='alert alert-danger';
+      errEl.textContent='Invalid email or password. Please try again.';
+    }
+  }
+  document.getElementById('lBtn').onclick=doLogin;
+  document.getElementById('lEmail').onkeydown=function(e){if(e.key==='Enter')document.getElementById('lPw').focus();};
+  document.getElementById('lPw').onkeydown=function(e){if(e.key==='Enter')doLogin();};
+  document.getElementById('goReg').onclick=function(){Router.go('register');};
+  document.getElementById('lEmail').focus();
+});
+
+
+// ---------- REGISTER -------------------------------------------
+Router.register('register', function(){
+  document.getElementById('root').innerHTML =
+    '<div class="auth-page"><div class="auth-card">'
+    +'<div class="auth-logo"><div class="auth-logo-mark">SW</div><div><div class="auth-logo-title">SMART WINGS: CPES</div><div class="auth-logo-sub">SDO Sipalay City · Negros Island Region</div></div></div>'
+    +'<h1 class="auth-heading">Create Account</h1>'
+    +'<p class="auth-sub">Access is restricted to DepEd personnel.</p>'
+    +'<div class="auth-form">'
+      +'<div class="form-row">'
+        +'<div class="form-group"><label class="form-label">Full Name <span class="required">*</span></label><input class="form-control" id="rName" type="text" placeholder="Juan dela Cruz"></div>'
+        +'<div class="form-group"><label class="form-label">Role</label><select class="form-control" id="rRole"><option>Viewer</option><option>Editor</option></select></div>'
+      +'</div>'
+      +'<div class="form-group"><label class="form-label">Email (DepEd) <span class="required">*</span></label><input class="form-control" id="rEmail" type="email" placeholder="yourname@deped.gov.ph"></div>'
+      +'<div class="form-group"><label class="form-label">School / Office <span class="required">*</span></label><input class="form-control" id="rSchool" type="text" placeholder="e.g. Sipalay City NHS"></div>'
+      +'<div class="form-group"><label class="form-label">Password <span class="required">*</span></label><input class="form-control" id="rPw" type="password" placeholder="Min. 8 characters"></div>'
+      +'<div id="rErr" class="hidden"></div><div id="rOk" class="hidden"></div>'
+      +'<button class="btn btn-primary btn-block" id="rBtn">Create Account</button>'
+    +'</div>'
+    +'<div class="auth-switch">Already have an account? <a id="goLogin2">Sign In</a></div>'
+    +'</div></div>';
+
+  document.getElementById('goLogin2').onclick=function(){Router.go('login');};
+  document.getElementById('rBtn').onclick=function(){
+    var name=H.val('rName').trim(),email=H.val('rEmail').trim(),school=H.val('rSchool').trim(),pw=H.val('rPw'),role=H.val('rRole');
+    var errEl=document.getElementById('rErr'),okEl=document.getElementById('rOk');
+    errEl.className='hidden'; okEl.className='hidden';
+    if(!name||!email||!school){errEl.className='alert alert-danger';errEl.textContent='All fields are required.';return;}
+    if(pw.length<8){errEl.className='alert alert-danger';errEl.textContent='Password must be at least 8 characters.';return;}
+    var users=Store.get('users');
+    if(users.filter(function(u){return u.email===email;}).length){errEl.className='alert alert-danger';errEl.textContent='Email already registered.';return;}
+    users.push({id:Store.nextId('u'),name:name,email:email,role:role,school:school,status:'Active',createdAt:new Date().toISOString().slice(0,10),password:pw});
+    Store.set('users',users);
+    okEl.className='alert alert-success';okEl.textContent='Account created! Redirecting to login...';
+    setTimeout(function(){Router.go('login');},1500);
+  };
+});
+
+
+// ---------- DASHBOARD ------------------------------------------
+Router.register('dashboard', function(app){
+  if(!Auth.check()) return;
+  var tx=Store.get('transmittals'),rs=Store.get('research'),dn=Store.get('donations');
+  var et=Store.get('etmrs'),ct=Store.get('certifications'),ag=Store.get('agreements');
+  var totalAmt=tx.reduce(function(s,r){return s+parseFloat(r.amountContribution||0);},0);
+  var totalBen=tx.reduce(function(s,r){return s+parseInt(r.numBeneficiaries||0);},0);
+  var activeAg=ag.filter(function(a){return a.status==='Active';}).length;
+
+  app.innerHTML=
+    '<div class="page-header"><div><h1 class="page-title">SMART WINGS: CPES Dashboard</h1><p class="page-subtitle">Contextualized Partnership Engagement System · SDO Sipalay City · CY 2026</p></div></div>'
+    +'<div class="stat-grid">'
+      +'<div class="stat-card blue"><div class="stat-label">Transmittals</div><div class="stat-value">'+tx.length+'</div><div class="stat-sub">Partnership data sheets</div></div>'
+      +'<div class="stat-card green"><div class="stat-label">Total Contributions</div><div class="stat-value" style="font-size:18px">'+H.currency(totalAmt)+'</div><div class="stat-sub">Across all partners</div></div>'
+      +'<div class="stat-card yellow"><div class="stat-label">Beneficiaries</div><div class="stat-value">'+H.num(totalBen)+'</div><div class="stat-sub">Learners reached</div></div>'
+      +'<div class="stat-card cyan"><div class="stat-label">Research Items</div><div class="stat-value">'+rs.length+'</div><div class="stat-sub">Innovation entries</div></div>'
+      +'<div class="stat-card red"><div class="stat-label">Donations</div><div class="stat-value">'+dn.length+'</div><div class="stat-sub">Utilization records</div></div>'
+      +'<div class="stat-card purple"><div class="stat-label">Active Agreements</div><div class="stat-value">'+activeAg+'</div><div class="stat-sub">MOA/MOU/DOD/DOA</div></div>'
+    +'</div>'
+    +'<div class="mb-6"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.875rem"><h2 style="font-size:15px;font-weight:600">Functional Areas</h2></div>'
+    +'<div class="fa-grid">'
+      +faCard('fa1','blue','📋','1','Partnerships Data Sheet Consolidation','Monthly consolidation at school, division, and regional levels. Captures contribution type, partners, amount, and beneficiaries.',tx.length+' transmittals','blue')
+      +faCard('fa2','green','🔬','2','Research & Innovation Repository','Houses sample studies and standardized templates for research and innovation related to partnerships.',rs.length+' entries','green')
+      +faCard('fa3','yellow','🎁','3','Utilization & Donation Report','Stores validated reports on donated resource utilization, organized by calendar year.',dn.length+' records','yellow')
+      +faCard('fa4','cyan','📁','4','ETMRS — Monthly Reports Repository','Cluster-based repository (Clusters 1–10) for school monthly consolidated reports.',et.length+' uploads','cyan')
+      +faCard('fa5','red','🏅','5','Certification on Amount Received','Official certifications for HIYAS Rewards and Recognition Program.',ct.length+' certifications','red')
+      +faCard('fa6','purple','🤝','6','MOA / MOU / DOD / DOA Compilations','Centralized archive of partnership agreements and acceptance documents.',ag.length+' agreements','gray')
+    +'</div></div>'
+    +'<div class="card"><div class="card-header"><span class="card-title">Recent Transmittal Reports</span><button class="btn btn-sm btn-secondary" id="viewAllBtn">View All</button></div>'
+    +'<div style="padding:0;" class="card-body"><div class="table-wrap"><table>'
+    +'<thead><tr><th>School</th><th>Month</th><th>Cluster</th><th>Type</th><th>Amount</th><th>Beneficiaries</th><th>Status</th></tr></thead>'
+    +'<tbody>'
+    +( tx.length ? tx.slice(0,5).map(function(t){return '<tr><td>'+H.esc(t.school)+'</td><td>'+H.esc(t.month+' '+t.year)+'</td><td>Cluster '+H.esc(t.cluster)+'</td><td>'+H.esc(t.contributionType)+'</td><td>'+H.currency(t.amountContribution)+'</td><td>'+H.num(t.numBeneficiaries)+'</td><td>'+H.statusBadge(t.status)+'</td></tr>';}).join('')
+      : '<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📄</div><div class="empty-title">No records yet</div></div></td></tr>')
+    +'</tbody></table></div></div></div>';
+
+  app.querySelectorAll('.fa-card[data-goto]').forEach(function(c){
+    c.onclick=function(){Router.go(c.getAttribute('data-goto'));};
+  });
+  document.getElementById('viewAllBtn').onclick=function(){Router.go('fa1');};
+});
+
+function faCard(route,iconColor,icon,num,title,desc,count,badgeColor){
+  return '<div class="fa-card" data-goto="'+route+'">'
+    +'<div class="fa-card-num">Functional Area '+num+'</div>'
+    +'<div style="display:flex;align-items:center;gap:.625rem"><div class="fa-card-icon '+iconColor+'">'+icon+'</div><div class="fa-card-title">'+H.esc(title)+'</div></div>'
+    +'<div class="fa-card-desc">'+H.esc(desc)+'</div>'
+    +'<div class="fa-card-footer"><span class="fa-card-count">'+H.esc(count)+'</span>'+H.badge('Active',badgeColor)+'</div>'
+    +'</div>';
+}
+
+
+// ---------- GENERIC LIST PAGE ----------------------------------
+function listPage(app, cfg) {
+  // cfg: {title, subtitle, storeKey, canAdd, columns, filterFn, formFn}
+  function render(q) {
+    q = q||'';
+    var all = Store.get(cfg.storeKey);
+    var rows = q ? all.filter(function(r){return cfg.filterFn(r,q.toLowerCase());}) : all;
+
+    app.innerHTML =
+      '<div class="page-header"><div><h1 class="page-title">'+H.esc(cfg.title)+'</h1><p class="page-subtitle">'+H.esc(cfg.subtitle)+'</p></div>'
+      +(cfg.canAdd?'<div><button class="btn btn-primary" id="addBtn">+ Add Record</button></div>':'')
+      +'</div>'
+      +'<div class="card"><div class="card-header"><span class="card-title">'+rows.length+' record'+(rows.length!==1?'s':'')+'</span>'
+      +'<div class="search-bar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>'
+      +'<input type="text" placeholder="Search..." id="srch" value="'+H.esc(q)+'"></div></div>'
+      +'<div style="padding:0"><div class="table-wrap"><table>'
+      +'<thead><tr>'+cfg.columns.map(function(c){return '<th>'+H.esc(c.label)+'</th>';}).join('')+'<th>Actions</th></tr></thead>'
+      +'<tbody id="tbody">'+renderRows(rows)+'</tbody>'
+      +'</table></div></div></div>';
+
+    if(cfg.canAdd) document.getElementById('addBtn').onclick=function(){
+      cfg.formFn(null, function(data){
+        var all=Store.get(cfg.storeKey);
+        all.push(Object.assign({id:Store.nextId(cfg.storeKey[0])},data));
+        Store.set(cfg.storeKey,all);
+        H.toast('Record saved.');
+        render(q);
+      });
+    };
+    document.getElementById('srch').oninput=function(e){render(e.target.value);};
+    wireActions(rows, q);
+  }
+
+  function renderRows(rows) {
+    if(!rows.length) return '<tr><td colspan="'+(cfg.columns.length+1)+'"><div class="empty-state"><div class="empty-icon">📄</div><div class="empty-title">No records found</div><div class="empty-desc">Click "+ Add Record" to create the first entry.</div></div></td></tr>';
+    return rows.map(function(r){
+      return '<tr>'+cfg.columns.map(function(c){return '<td>'+(c.render?c.render(r):H.esc(r[c.key]||'—'))+'</td>';}).join('')
+        +'<td style="white-space:nowrap">'
+        +'<button class="btn btn-sm btn-outline-info view-r" data-id="'+r.id+'">View</button> '
+        +(Auth.can('create')?'<button class="btn btn-sm btn-ghost edit-r" data-id="'+r.id+'">Edit</button> ':'')
+        +(Auth.can('edit')?'<button class="btn btn-sm btn-ghost text-danger-btn del-r" data-id="'+r.id+'">Delete</button>':'')
+        +'</td></tr>';
+    }).join('');
+  }
+
+  function wireActions(rows, q) {
+    app.querySelectorAll('.view-r').forEach(function(btn){
+      btn.onclick=function(){
+        var id=btn.getAttribute('data-id');
+        var rec=Store.get(cfg.storeKey).filter(function(r){return r.id===id;})[0];
+        if(!rec) return;
+        if(cfg.viewFn) {
+          cfg.viewFn(rec);
+        } else {
+          // Default view: render all fields as a read-only detail card
+          var fields=Object.keys(rec).filter(function(k){return k!=='id';});
+          var body='<div class="form-section"><div class="view-detail-grid">'
+            +fields.map(function(k){
+              var label=k.replace(/([A-Z])/g,' $1').replace(/^./,function(s){return s.toUpperCase();});
+              var val=rec[k]===''||rec[k]===null||rec[k]===undefined?'—':rec[k];
+              return '<div class="view-detail-row"><span class="view-detail-label">'+H.esc(label)+'</span><span class="view-detail-val">'+H.esc(String(val))+'</span></div>';
+            }).join('')
+            +'</div></div>';
+          H.modal('Record Details', body, function(foot,close){
+            var c=document.createElement('button');c.className='btn btn-secondary';c.textContent='Close';c.onclick=close;
+            foot.appendChild(c);
+          });
+        }
+      };
+    });
+    app.querySelectorAll('.edit-r').forEach(function(btn){
+      btn.onclick=function(){
+        var id=btn.getAttribute('data-id');
+        var rec=Store.get(cfg.storeKey).filter(function(r){return r.id===id;})[0];
+        if(!rec) return;
+        cfg.formFn(rec, function(data){
+          var all=Store.get(cfg.storeKey);
+          for(var i=0;i<all.length;i++) if(all[i].id===id){all[i]=Object.assign({id:id},data);break;}
+          Store.set(cfg.storeKey,all);
+          H.toast('Record updated.');
+          render(q);
+        });
+      };
+    });
+    app.querySelectorAll('.del-r').forEach(function(btn){
+      btn.onclick=function(){
+        if(!confirm('Delete this record? This cannot be undone.')) return;
+        var id=btn.getAttribute('data-id');
+        var all=Store.get(cfg.storeKey).filter(function(r){return r.id!==id;});
+        Store.set(cfg.storeKey,all);
+        H.toast('Deleted.','warning');
+        render(q);
+      };
+    });
+  }
+
+  render();
+}
+
+
+// ---------- FA1: TRANSMITTALS ----------------------------------
+Router.register('fa1', function(app){
+  if(!Auth.check()) return;
+  var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var contribTypes=['Cash','In-Kind','Service','Scholarship','Infrastructure','Equipment','Supplies','Other'];
+  listPage(app,{
+    title:'Partnerships Data Sheet Consolidation',
+    subtitle:'FA1 — Transmittal Reports · Monthly consolidation of partnership data',
+    storeKey:'transmittals', canAdd:Auth.can('create'),
+    columns:[
+      {label:'School',key:'school'},
+      {label:'Month/Year',render:function(r){return H.esc(r.month+' '+r.year);}},
+      {label:'Cluster',render:function(r){return 'Cluster '+H.esc(r.cluster);}},
+      {label:'Type',key:'contributionType'},
+      {label:'Partners',key:'numPartners'},
+      {label:'Amount',render:function(r){return H.currency(r.amountContribution);}},
+      {label:'Beneficiaries',render:function(r){return H.num(r.numBeneficiaries);}},
+      {label:'Status',render:function(r){return H.statusBadge(r.status);}}
+    ],
+    filterFn:function(r,q){return r.school.toLowerCase().includes(q)||r.month.toLowerCase().includes(q);},
+    viewFn:function(r){
+      H.modal('Transmittal Report — '+H.esc(r.school),
+        '<div class="form-section"><div class="form-section-title">School Information</div><div class="view-detail-grid">'
+        +'<div class="view-detail-row"><span class="view-detail-label">School</span><span class="view-detail-val">'+H.esc(r.school)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Cluster</span><span class="view-detail-val">Cluster '+H.esc(r.cluster)+'</span></div>'
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">Reporting Period</div><div class="view-detail-grid">'
+        +'<div class="view-detail-row"><span class="view-detail-label">Month</span><span class="view-detail-val">'+H.esc(r.month)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Year</span><span class="view-detail-val">'+H.esc(r.year)+'</span></div>'
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">Partnership Data</div><div class="view-detail-grid">'
+        +'<div class="view-detail-row"><span class="view-detail-label">Contribution Type</span><span class="view-detail-val">'+H.esc(r.contributionType)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">No. of Partners</span><span class="view-detail-val">'+H.esc(String(r.numPartners))+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Amount of Contribution</span><span class="view-detail-val">'+H.currency(r.amountContribution)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">No. of Beneficiary Learners</span><span class="view-detail-val">'+H.num(r.numBeneficiaries)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Status</span><span class="view-detail-val">'+H.statusBadge(r.status)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Date Encoded</span><span class="view-detail-val">'+H.fmtDate(r.createdAt)+'</span></div>'
+        +'</div></div>',
+        function(foot,close){var c=document.createElement('button');c.className='btn btn-secondary';c.textContent='Close';c.onclick=close;foot.appendChild(c);}
+      );
+    },
+    formFn:function(rec,onSave){
+      var isEdit=!!rec;
+      H.modal(isEdit?'Edit Transmittal':'New Transmittal Report',
+        '<div class="form-section"><div class="form-section-title">School Information</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">School Name <span class="required">*</span></label><input class="form-control" id="f_school" type="text" value="'+H.esc(rec?rec.school:'')+'"></div>'
+          +'<div class="form-group"><label class="form-label">Cluster <span class="required">*</span></label><select class="form-control" id="f_cluster">'+H.selOpts(['1','2','3','4','5','6','7','8','9','10'].map(function(c){return 'Cluster '+c;}), rec?'Cluster '+rec.cluster:'Cluster 1')+'</select></div>'
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">Reporting Period</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">Month <span class="required">*</span></label><select class="form-control" id="f_month">'+H.selOpts(months,rec?rec.month:'January')+'</select></div>'
+          +'<div class="form-group"><label class="form-label">Year <span class="required">*</span></label><select class="form-control" id="f_year">'+H.selOpts(['2024','2025','2026','2027'],rec?rec.year:'2026')+'</select></div>'
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">Partnership Data</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">Contribution Type <span class="required">*</span></label><select class="form-control" id="f_type">'+H.selOpts(contribTypes,rec?rec.contributionType:'Cash')+'</select></div>'
+          +'<div class="form-group"><label class="form-label">No. of Partners <span class="required">*</span></label><input class="form-control" id="f_partners" type="number" min="0" value="'+H.esc(rec?rec.numPartners:'')+'"></div>'
+        +'</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">Amount of Contribution (₱) <span class="required">*</span></label><input class="form-control" id="f_amount" type="number" min="0" step="0.01" value="'+H.esc(rec?rec.amountContribution:'')+'"><span class="form-hint">e.g. 1000.00</span></div>'
+          +'<div class="form-group"><label class="form-label">No. of Beneficiary Learners <span class="required">*</span></label><input class="form-control" id="f_benef" type="number" min="0" value="'+H.esc(rec?rec.numBeneficiaries:'')+'"></div>'
+        +'</div>'
+        +'<div class="form-group"><label class="form-label">Status</label><select class="form-control" id="f_status">'+H.selOpts(['Submitted','Validated','Pending'],rec?rec.status:'Submitted')+'</select></div>'
+        +'</div>',
+        function(foot,close){
+          var c=document.createElement('button');c.className='btn btn-secondary';c.textContent='Cancel';c.onclick=close;
+          var s=document.createElement('button');s.className='btn btn-primary';s.textContent=isEdit?'Save Changes':'Submit';
+          s.onclick=function(){
+            var school=H.val('f_school').trim();
+            if(!school){H.toast('School name is required.','danger');return;}
+            var clusterRaw=H.val('f_cluster');
+            var clusterNum=clusterRaw.replace('Cluster ','');
+            onSave({school:school,cluster:clusterNum,month:H.val('f_month'),year:H.val('f_year'),contributionType:H.val('f_type'),numPartners:parseInt(H.val('f_partners'))||0,amountContribution:parseFloat(H.val('f_amount'))||0,numBeneficiaries:parseInt(H.val('f_benef'))||0,status:H.val('f_status'),createdAt:rec?rec.createdAt:new Date().toISOString().slice(0,10)});
+            close();
+          };
+          foot.appendChild(c);foot.appendChild(s);
+        }
+      );
+    }
+  });
+});
+
+
+// ---------- FA2: RESEARCH & INNOVATION ------------------------
+Router.register('fa2', function(app){
+  if(!Auth.check()) return;
+  var types=['Action Research','Innovation Paper','Case Study','Policy Review','Other'];
+  listPage(app,{
+    title:'Research & Innovation Repository',
+    subtitle:'FA2 — Sample studies and templates for research and innovation initiatives',
+    storeKey:'research', canAdd:Auth.can('create'),
+    columns:[
+      {label:'Title',key:'title'},
+      {label:'Type',render:function(r){return H.badge(r.type,'blue');}},
+      {label:'Author',key:'author'},
+      {label:'School / Office',key:'school'},
+      {label:'Year',key:'year'},
+      {label:'Status',render:function(r){return H.statusBadge(r.status);}}
+    ],
+    filterFn:function(r,q){return r.title.toLowerCase().includes(q)||r.author.toLowerCase().includes(q);},
+    viewFn:function(r){
+      H.modal('Research Entry — '+H.esc(r.title),
+        '<div class="form-section"><div class="form-section-title">Research Details</div><div class="view-detail-grid">'
+        +'<div class="view-detail-row"><span class="view-detail-label">Title</span><span class="view-detail-val">'+H.esc(r.title)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Type</span><span class="view-detail-val">'+H.badge(r.type,'blue')+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Year</span><span class="view-detail-val">'+H.esc(r.year)+'</span></div>'
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">Author</div><div class="view-detail-grid">'
+        +'<div class="view-detail-row"><span class="view-detail-label">Author(s)</span><span class="view-detail-val">'+H.esc(r.author)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">School / Office</span><span class="view-detail-val">'+H.esc(r.school||'—')+'</span></div>'
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">Content</div><div class="view-detail-grid">'
+        +'<div class="view-detail-row"><span class="view-detail-label">Abstract</span><span class="view-detail-val" style="white-space:pre-wrap">'+H.esc(r.abstract||'—')+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Status</span><span class="view-detail-val">'+H.statusBadge(r.status)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Date Encoded</span><span class="view-detail-val">'+H.fmtDate(r.createdAt)+'</span></div>'
+        +'</div></div>',
+        function(foot,close){var c=document.createElement('button');c.className='btn btn-secondary';c.textContent='Close';c.onclick=close;foot.appendChild(c);}
+      );
+    },
+    formFn:function(rec,onSave){
+      var isEdit=!!rec;
+      H.modal(isEdit?'Edit Research Entry':'Add Research Entry',
+        '<div class="form-section"><div class="form-section-title">Research Details</div>'
+        +'<div class="form-group"><label class="form-label">Title <span class="required">*</span></label><input class="form-control" id="r_title" type="text" value="'+H.esc(rec?rec.title:'')+'"></div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">Type <span class="required">*</span></label><select class="form-control" id="r_type">'+H.selOpts(types,rec?rec.type:'Action Research')+'</select></div>'
+          +'<div class="form-group"><label class="form-label">Year</label><select class="form-control" id="r_year">'+H.selOpts(['2024','2025','2026'],rec?rec.year:'2026')+'</select></div>'
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">Author</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">Author(s) <span class="required">*</span></label><input class="form-control" id="r_author" type="text" value="'+H.esc(rec?rec.author:'')+'"></div>'
+          +'<div class="form-group"><label class="form-label">School / Office</label><input class="form-control" id="r_school" type="text" value="'+H.esc(rec?rec.school:'')+'"></div>'
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">Content</div>'
+        +'<div class="form-group"><label class="form-label">Abstract / Description</label><textarea class="form-control" id="r_abs" rows="4">'+H.esc(rec?rec.abstract:'')+'</textarea></div>'
+        +'<div class="form-group"><label class="form-label">Status</label><select class="form-control" id="r_status">'+H.selOpts(['Draft','Submitted','Published'],rec?rec.status:'Draft')+'</select></div>'
+        +'</div>',
+        function(foot,close){
+          var c=document.createElement('button');c.className='btn btn-secondary';c.textContent='Cancel';c.onclick=close;
+          var s=document.createElement('button');s.className='btn btn-primary';s.textContent=isEdit?'Save Changes':'Add Entry';
+          s.onclick=function(){
+            var title=H.val('r_title').trim();
+            if(!title){H.toast('Title is required.','danger');return;}
+            onSave({title:title,type:H.val('r_type'),year:H.val('r_year'),author:H.val('r_author').trim(),school:H.val('r_school').trim(),abstract:H.val('r_abs').trim(),status:H.val('r_status'),createdAt:rec?rec.createdAt:new Date().toISOString().slice(0,10)});
+            close();
+          };
+          foot.appendChild(c);foot.appendChild(s);
+        }
+      );
+    }
+  });
+});
+
+
+// ---------- FA3: DONATION REPORTS -----------------------------
+Router.register('fa3', function(app){
+  if(!Auth.check()) return;
+  var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var dtypes=['Cash','In-Kind','Service','Equipment','Supplies','Construction Materials','Food','Medals','Books','Other'];
+  listPage(app,{
+    title:'Utilization & Donation Report Compilation',
+    subtitle:'FA3 — CY 2024–2026 · Donated resource utilization records',
+    storeKey:'donations', canAdd:Auth.can('create'),
+    columns:[
+      {label:'School',key:'school'},
+      {label:'Quarter/Month',render:function(r){return H.esc(r.quarter+' · '+r.month+' '+r.year);}},
+      {label:'Type',render:function(r){return H.badge(r.donationType,'blue');}},
+      {label:'Description',key:'description'},
+      {label:'Amount/Value',render:function(r){return r.amount?H.currency(r.amount):'In-Kind';}},
+      {label:'Donor',key:'donorName'},
+      {label:'MOA/MOU',render:function(r){return H.badge(r.hasMOA,r.hasMOA==='Yes'?'green':'gray');}},
+      {label:'Status',render:function(r){return H.statusBadge(r.status);}}
+    ],
+    filterFn:function(r,q){return r.school.toLowerCase().includes(q)||r.donorName.toLowerCase().includes(q)||r.description.toLowerCase().includes(q);},
+    viewFn:function(r){
+      H.modal('Donation Record — '+H.esc(r.school),
+        '<div class="form-section"><div class="form-section-title">School Information</div><div class="view-detail-grid">'
+        +'<div class="view-detail-row"><span class="view-detail-label">School</span><span class="view-detail-val">'+H.esc(r.school)+'</span></div>'
+        +(r.schoolId?'<div class="view-detail-row"><span class="view-detail-label">School ID</span><span class="view-detail-val">'+H.esc(r.schoolId)+'</span></div>':'')
+        +(r.address?'<div class="view-detail-row"><span class="view-detail-label">Address</span><span class="view-detail-val">'+H.esc(r.address)+'</span></div>':'')
+        +(r.schoolHead?'<div class="view-detail-row"><span class="view-detail-label">School Head</span><span class="view-detail-val">'+H.esc(r.schoolHead)+'</span></div>':'')
+        +(r.coordinator?'<div class="view-detail-row"><span class="view-detail-label">Partnership Coordinator</span><span class="view-detail-val">'+H.esc(r.coordinator)+'</span></div>':'')
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">Donation Details</div><div class="view-detail-grid">'
+        +'<div class="view-detail-row"><span class="view-detail-label">Quarter / Month</span><span class="view-detail-val">'+H.esc(r.quarter+' · '+r.month+' '+r.year)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Donation Type</span><span class="view-detail-val">'+H.badge(r.donationType,'blue')+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Description</span><span class="view-detail-val">'+H.esc(r.description)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Amount / Value</span><span class="view-detail-val">'+(r.amount?H.currency(r.amount):'In-Kind')+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Donor</span><span class="view-detail-val">'+H.esc(r.donorName)+'</span></div>'
+        +(r.dateReceived?'<div class="view-detail-row"><span class="view-detail-label">Date Received</span><span class="view-detail-val">'+H.fmtDate(r.dateReceived)+'</span></div>':'')
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">MOA/MOU & Utilization</div><div class="view-detail-grid">'
+        +'<div class="view-detail-row"><span class="view-detail-label">Has MOA/MOU?</span><span class="view-detail-val">'+H.badge(r.hasMOA,r.hasMOA==='Yes'?'green':'gray')+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Notarized?</span><span class="view-detail-val">'+H.badge(r.notarized||'No',r.notarized==='Yes'?'green':'gray')+'</span></div>'
+        +(r.notarizedDate?'<div class="view-detail-row"><span class="view-detail-label">Notarized Date</span><span class="view-detail-val">'+H.fmtDate(r.notarizedDate)+'</span></div>':'')
+        +(r.usageDescription?'<div class="view-detail-row"><span class="view-detail-label">Usage / Turned Over To</span><span class="view-detail-val" style="white-space:pre-wrap">'+H.esc(r.usageDescription)+'</span></div>':'')
+        +'<div class="view-detail-row"><span class="view-detail-label">Status</span><span class="view-detail-val">'+H.statusBadge(r.status)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Date Encoded</span><span class="view-detail-val">'+H.fmtDate(r.createdAt)+'</span></div>'
+        +'</div></div>',
+        function(foot,close){var c=document.createElement('button');c.className='btn btn-secondary';c.textContent='Close';c.onclick=close;foot.appendChild(c);}
+      );
+    },
+    formFn:function(rec,onSave){
+      var isEdit=!!rec;
+      H.modal(isEdit?'Edit Donation Record':'New Donation Record',
+        '<div class="form-section"><div class="form-section-title">School Information</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">Name of School <span class="required">*</span></label><input class="form-control" id="d_school" type="text" value="'+H.esc(rec?rec.school:'')+'"></div>'
+          +'<div class="form-group"><label class="form-label">School ID</label><input class="form-control" id="d_sid" type="text" value="'+H.esc(rec?rec.schoolId:'')+'"></div>'
+        +'</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">School Head</label><input class="form-control" id="d_head" type="text" value="'+H.esc(rec?rec.schoolHead:'')+'"></div>'
+          +'<div class="form-group"><label class="form-label">Partnership Coordinator</label><input class="form-control" id="d_coord" type="text" value="'+H.esc(rec?rec.coordinator:'')+'"></div>'
+        +'</div>'
+        +'<div class="form-group"><label class="form-label">Complete Address</label><input class="form-control" id="d_addr" type="text" value="'+H.esc(rec?rec.address:'')+'"></div>'
+        +'<div class="form-group"><label class="form-label">School Contact / DepEd Email</label><input class="form-control" id="d_contact" type="text" value="'+H.esc(rec?rec.contact:'')+'"></div>'
+        +'</div>'
+        +'<div class="form-section"><div class="form-section-title">Donation Details</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">Quarter <span class="required">*</span></label><select class="form-control" id="d_q">'+H.selOpts(['Q1','Q2','Q3','Q4'],rec?rec.quarter:'Q1')+'</select></div>'
+          +'<div class="form-group"><label class="form-label">Month <span class="required">*</span></label><select class="form-control" id="d_m">'+H.selOpts(months,rec?rec.month:'January')+'</select></div>'
+          +'<div class="form-group"><label class="form-label">Year <span class="required">*</span></label><select class="form-control" id="d_y">'+H.selOpts(['2024','2025','2026'],rec?rec.year:'2026')+'</select></div>'
+        +'</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">Contribution Type/Donation Received <span class="required">*</span></label><select class="form-control" id="d_type">'+H.selOpts(dtypes,rec?rec.donationType:'Cash')+'</select></div>'
+          +'<div class="form-group"><label class="form-label">Actual Amount/Value (₱)</label><input class="form-control" id="d_amt" type="number" min="0" step="0.01" value="'+H.esc(rec?rec.amount:'')+'"><span class="form-hint">Leave 0 for in-kind</span></div>'
+        +'</div>'
+        +'<div class="form-group"><label class="form-label">Description of Donation <span class="required">*</span></label><input class="form-control" id="d_desc" type="text" value="'+H.esc(rec?rec.description:'')+'"></div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">Name of Donor(s) <span class="required">*</span></label><input class="form-control" id="d_donor" type="text" value="'+H.esc(rec?rec.donorName:'')+'"></div>'
+          +'<div class="form-group"><label class="form-label">Date Received</label><input class="form-control" id="d_date" type="date" value="'+H.esc(rec?rec.dateReceived:'')+'"></div>'
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">MOA/MOU & Utilization</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">Has MOA/MOU?</label><select class="form-control" id="d_moa">'+H.selOpts(['Yes','No'],rec?rec.hasMOA:'No')+'</select></div>'
+          +'<div class="form-group"><label class="form-label">Notarized?</label><select class="form-control" id="d_not">'+H.selOpts(['Yes','No'],rec?rec.notarized:'No')+'</select></div>'
+          +'<div class="form-group"><label class="form-label">Notarized Date</label><input class="form-control" id="d_notd" type="date" value="'+H.esc(rec?rec.notarizedDate:'')+'"></div>'
+        +'</div>'
+        +'<div class="form-group"><label class="form-label">Usage / Turned Over To</label><textarea class="form-control" id="d_usage" rows="3">'+H.esc(rec?rec.usageDescription:'')+'</textarea></div>'
+        +'<div class="form-group"><label class="form-label">Status</label><select class="form-control" id="d_status">'+H.selOpts(['Encoded','Validated','Utilized'],rec?rec.status:'Encoded')+'</select></div>'
+        +'</div>',
+        function(foot,close){
+          var c=document.createElement('button');c.className='btn btn-secondary';c.textContent='Cancel';c.onclick=close;
+          var s=document.createElement('button');s.className='btn btn-primary';s.textContent=isEdit?'Save Changes':'Save Record';
+          s.onclick=function(){
+            var school=H.val('d_school').trim(),desc=H.val('d_desc').trim(),donor=H.val('d_donor').trim();
+            if(!school||!desc||!donor){H.toast('School, description, and donor are required.','danger');return;}
+            onSave({school:school,schoolId:H.val('d_sid').trim(),schoolHead:H.val('d_head').trim(),coordinator:H.val('d_coord').trim(),address:H.val('d_addr').trim(),contact:H.val('d_contact').trim(),quarter:H.val('d_q'),month:H.val('d_m'),year:H.val('d_y'),donationType:H.val('d_type'),amount:parseFloat(H.val('d_amt'))||0,description:desc,donorName:donor,dateReceived:H.val('d_date'),hasMOA:H.val('d_moa'),notarized:H.val('d_not'),notarizedDate:H.val('d_notd'),usageDescription:H.val('d_usage').trim(),status:H.val('d_status'),createdAt:rec?rec.createdAt:new Date().toISOString().slice(0,10)});
+            close();
+          };
+          foot.appendChild(c);foot.appendChild(s);
+        }
+      );
+    }
+  });
+});
+
+
+// ---------- FA4: ETMRS ----------------------------------------
+Router.register('fa4', function(app){
+  if(!Auth.check()) return;
+  var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  listPage(app,{
+    title:'ETMRS — Transmittal & Consolidated Monthly Reports',
+    subtitle:'FA4 — Cluster-based repository (Clusters 1–10) for school monthly consolidated reports',
+    storeKey:'etmrs', canAdd:Auth.can('create'),
+    columns:[
+      {label:'School',key:'school'},
+      {label:'Cluster',render:function(r){return 'Cluster '+H.esc(r.cluster);}},
+      {label:'Month/Year',render:function(r){return H.esc(r.month+' '+r.year);}},
+      {label:'Partners',key:'totalPartners'},
+      {label:'Total Amount',render:function(r){return H.currency(r.totalAmount);}},
+      {label:'Beneficiaries',render:function(r){return H.num(r.totalBeneficiaries);}},
+      {label:'School Head',key:'schoolHeadSignature'},
+      {label:'Submitted',render:function(r){return H.fmtDate(r.submittedDate);}},
+      {label:'Status',render:function(r){return H.statusBadge(r.status);}}
+    ],
+    filterFn:function(r,q){return r.school.toLowerCase().includes(q)||String(r.cluster).includes(q);},
+    viewFn:function(r){
+      H.modal('Monthly Report — '+H.esc(r.school),
+        '<div class="form-section"><div class="form-section-title">School & Cluster</div><div class="view-detail-grid">'
+        +'<div class="view-detail-row"><span class="view-detail-label">School</span><span class="view-detail-val">'+H.esc(r.school)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Cluster</span><span class="view-detail-val">Cluster '+H.esc(r.cluster)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Month / Year</span><span class="view-detail-val">'+H.esc(r.month+' '+r.year)+'</span></div>'
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">Consolidated Totals</div><div class="view-detail-grid">'
+        +'<div class="view-detail-row"><span class="view-detail-label">Total Partners</span><span class="view-detail-val">'+H.num(r.totalPartners)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Total Amount</span><span class="view-detail-val">'+H.currency(r.totalAmount)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Total Beneficiaries</span><span class="view-detail-val">'+H.num(r.totalBeneficiaries)+'</span></div>'
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">Submission</div><div class="view-detail-grid">'
+        +'<div class="view-detail-row"><span class="view-detail-label">School Head</span><span class="view-detail-val">'+H.esc(r.schoolHeadSignature||'—')+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Date Submitted</span><span class="view-detail-val">'+H.fmtDate(r.submittedDate)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Status</span><span class="view-detail-val">'+H.statusBadge(r.status)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Date Encoded</span><span class="view-detail-val">'+H.fmtDate(r.createdAt)+'</span></div>'
+        +'</div></div>',
+        function(foot,close){var c=document.createElement('button');c.className='btn btn-secondary';c.textContent='Close';c.onclick=close;foot.appendChild(c);}
+      );
+    },
+    formFn:function(rec,onSave){
+      var isEdit=!!rec;
+      H.modal(isEdit?'Edit Monthly Report':'Upload Monthly Report',
+        '<div class="form-section"><div class="form-section-title">School & Cluster</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">School Name <span class="required">*</span></label><input class="form-control" id="e_school" type="text" value="'+H.esc(rec?rec.school:'')+'"></div>'
+          +'<div class="form-group"><label class="form-label">Cluster <span class="required">*</span></label><select class="form-control" id="e_cluster">'+H.selOpts(['1','2','3','4','5','6','7','8','9','10'].map(function(c){return 'Cluster '+c;}),rec?'Cluster '+rec.cluster:'Cluster 1')+'</select></div>'
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">Reporting Period</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">Month <span class="required">*</span></label><select class="form-control" id="e_month">'+H.selOpts(months,rec?rec.month:'January')+'</select></div>'
+          +'<div class="form-group"><label class="form-label">Year <span class="required">*</span></label><select class="form-control" id="e_year">'+H.selOpts(['2025','2026','2027'],rec?rec.year:'2026')+'</select></div>'
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">Consolidated Totals</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">Total Partners <span class="required">*</span></label><input class="form-control" id="e_tp" type="number" min="0" value="'+H.esc(rec?rec.totalPartners:'')+'"></div>'
+          +'<div class="form-group"><label class="form-label">Total Amount (₱) <span class="required">*</span></label><input class="form-control" id="e_ta" type="number" min="0" step="0.01" value="'+H.esc(rec?rec.totalAmount:'')+'"></div>'
+          +'<div class="form-group"><label class="form-label">Total Beneficiaries <span class="required">*</span></label><input class="form-control" id="e_tb" type="number" min="0" value="'+H.esc(rec?rec.totalBeneficiaries:'')+'"></div>'
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">Submission</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">School Head Name <span class="required">*</span></label><input class="form-control" id="e_sh" type="text" value="'+H.esc(rec?rec.schoolHeadSignature:'')+'"></div>'
+          +'<div class="form-group"><label class="form-label">Date Submitted</label><input class="form-control" id="e_sd" type="date" value="'+H.esc(rec?rec.submittedDate:'')+'"></div>'
+        +'</div>'
+        +'<div class="form-group"><label class="form-label">Status</label><select class="form-control" id="e_status">'+H.selOpts(['Pending','Uploaded','Validated'],rec?rec.status:'Pending')+'</select></div>'
+        +'</div>',
+        function(foot,close){
+          var c=document.createElement('button');c.className='btn btn-secondary';c.textContent='Cancel';c.onclick=close;
+          var s=document.createElement('button');s.className='btn btn-primary';s.textContent=isEdit?'Save Changes':'Upload Report';
+          s.onclick=function(){
+            var school=H.val('e_school').trim();
+            if(!school){H.toast('School name is required.','danger');return;}
+            onSave({school:school,cluster:H.val('e_cluster').replace('Cluster ',''),month:H.val('e_month'),year:H.val('e_year'),totalPartners:parseInt(H.val('e_tp'))||0,totalAmount:parseFloat(H.val('e_ta'))||0,totalBeneficiaries:parseInt(H.val('e_tb'))||0,schoolHeadSignature:H.val('e_sh').trim(),submittedDate:H.val('e_sd'),status:H.val('e_status'),createdAt:rec?rec.createdAt:new Date().toISOString().slice(0,10)});
+            close();
+          };
+          foot.appendChild(c);foot.appendChild(s);
+        }
+      );
+    }
+  });
+});
+
+
+// ---------- FA5: CERTIFICATIONS --------------------------------
+Router.register('fa5', function(app){
+  if(!Auth.check()) return;
+  listPage(app,{
+    title:'Certification on Amount Received & Points Earned',
+    subtitle:'FA5 — HIYAS Rewards & Recognition Program · Official partnership certifications',
+    storeKey:'certifications', canAdd:Auth.can('create'),
+    columns:[
+      {label:'School',key:'school'},
+      {label:'School Head',key:'schoolHead'},
+      {label:'Partner Name',key:'partnerName'},
+      {label:'Amount Received',render:function(r){return H.currency(r.amountReceived);}},
+      {label:'Points Earned',key:'pointsEarned'},
+      {label:'Year/Quarter',render:function(r){return H.esc(r.programYear+' · '+r.quarter);}},
+      {label:'HIYAS',render:function(r){return H.badge(r.hiyas,r.hiyas==='Yes'?'green':'gray');}},
+      {label:'Status',render:function(r){return H.statusBadge(r.status);}}
+    ],
+    filterFn:function(r,q){return r.school.toLowerCase().includes(q)||r.partnerName.toLowerCase().includes(q);},
+    viewFn:function(r){
+      H.modal('Certification — '+H.esc(r.school),
+        '<div class="form-section"><div class="form-section-title">School Details</div><div class="view-detail-grid">'
+        +'<div class="view-detail-row"><span class="view-detail-label">School</span><span class="view-detail-val">'+H.esc(r.school)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">School Head</span><span class="view-detail-val">'+H.esc(r.schoolHead||'—')+'</span></div>'
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">Partner & Contribution</div><div class="view-detail-grid">'
+        +'<div class="view-detail-row"><span class="view-detail-label">Partner Name</span><span class="view-detail-val">'+H.esc(r.partnerName)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Amount Received</span><span class="view-detail-val">'+H.currency(r.amountReceived)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Points Earned</span><span class="view-detail-val">'+H.esc(String(r.pointsEarned))+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Certificate Date</span><span class="view-detail-val">'+H.fmtDate(r.certDate)+'</span></div>'
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">Program Period</div><div class="view-detail-grid">'
+        +'<div class="view-detail-row"><span class="view-detail-label">Program Year</span><span class="view-detail-val">'+H.esc(r.programYear)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Quarter</span><span class="view-detail-val">'+H.esc(r.quarter)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">HIYAS Eligible</span><span class="view-detail-val">'+H.badge(r.hiyas,r.hiyas==='Yes'?'green':'gray')+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Status</span><span class="view-detail-val">'+H.statusBadge(r.status)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Date Encoded</span><span class="view-detail-val">'+H.fmtDate(r.createdAt)+'</span></div>'
+        +'</div></div>',
+        function(foot,close){var c=document.createElement('button');c.className='btn btn-secondary';c.textContent='Close';c.onclick=close;foot.appendChild(c);}
+      );
+    },
+    formFn:function(rec,onSave){
+      var isEdit=!!rec;
+      H.modal(isEdit?'Edit Certification':'Issue Certification',
+        '<div class="form-section"><div class="form-section-title">School Details</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">School Name <span class="required">*</span></label><input class="form-control" id="c_school" type="text" value="'+H.esc(rec?rec.school:'')+'"></div>'
+          +'<div class="form-group"><label class="form-label">School Head</label><input class="form-control" id="c_head" type="text" value="'+H.esc(rec?rec.schoolHead:'')+'"></div>'
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">Partner & Contribution</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">Partner Name <span class="required">*</span></label><input class="form-control" id="c_partner" type="text" value="'+H.esc(rec?rec.partnerName:'')+'"></div>'
+          +'<div class="form-group"><label class="form-label">Amount Received (₱)</label><input class="form-control" id="c_amt" type="number" min="0" step="0.01" value="'+H.esc(rec?rec.amountReceived:'')+'"></div>'
+        +'</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">Points Earned</label><input class="form-control" id="c_pts" type="number" min="0" value="'+H.esc(rec?rec.pointsEarned:'')+'"><span class="form-hint">Based on recognition rubric</span></div>'
+          +'<div class="form-group"><label class="form-label">Certificate Date</label><input class="form-control" id="c_date" type="date" value="'+H.esc(rec?rec.certDate:'')+'"></div>'
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">Program Period</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">Program Year</label><select class="form-control" id="c_yr">'+H.selOpts(['2024','2025','2026'],rec?rec.programYear:'2026')+'</select></div>'
+          +'<div class="form-group"><label class="form-label">Quarter</label><select class="form-control" id="c_qr">'+H.selOpts(['Q1','Q2','Q3','Q4'],rec?rec.quarter:'Q1')+'</select></div>'
+          +'<div class="form-group"><label class="form-label">HIYAS Eligible?</label><select class="form-control" id="c_hiyas">'+H.selOpts(['Yes','No'],rec?rec.hiyas:'Yes')+'</select></div>'
+        +'</div>'
+        +'<div class="form-group"><label class="form-label">Status</label><select class="form-control" id="c_status">'+H.selOpts(['Pending','Issued','Approved'],rec?rec.status:'Pending')+'</select></div>'
+        +'</div>',
+        function(foot,close){
+          var c=document.createElement('button');c.className='btn btn-secondary';c.textContent='Cancel';c.onclick=close;
+          var s=document.createElement('button');s.className='btn btn-primary';s.textContent=isEdit?'Save Changes':'Issue Certificate';
+          s.onclick=function(){
+            var school=H.val('c_school').trim(),partner=H.val('c_partner').trim();
+            if(!school||!partner){H.toast('School and partner name are required.','danger');return;}
+            onSave({school:school,schoolHead:H.val('c_head').trim(),partnerName:partner,amountReceived:parseFloat(H.val('c_amt'))||0,pointsEarned:parseInt(H.val('c_pts'))||0,certDate:H.val('c_date'),programYear:H.val('c_yr'),quarter:H.val('c_qr'),hiyas:H.val('c_hiyas'),status:H.val('c_status'),createdAt:rec?rec.createdAt:new Date().toISOString().slice(0,10)});
+            close();
+          };
+          foot.appendChild(c);foot.appendChild(s);
+        }
+      );
+    }
+  });
+});
+
+
+// ---------- FA6: MOA/MOU/DOD/DOA ------------------------------
+Router.register('fa6', function(app){
+  if(!Auth.check()) return;
+  var natures=['LGU','NGO','Private Company','Individual','Academic Institution','Government Agency','Other'];
+  listPage(app,{
+    title:'MOA / MOU / DOD / DOA Compilations',
+    subtitle:'FA6 — Centralized archive of partnership agreements and acceptance documents',
+    storeKey:'agreements', canAdd:Auth.can('create'),
+    columns:[
+      {label:'School / Office',key:'school'},
+      {label:'Cluster',render:function(r){return 'Cluster '+H.esc(r.cluster);}},
+      {label:'Type',render:function(r){return H.badge(r.agreementType,'blue');}},
+      {label:'Partner',key:'partnerName'},
+      {label:'Nature',key:'partnerNature'},
+      {label:'Purpose',render:function(r){return '<span title="'+H.esc(r.purpose)+'" style="max-width:160px;display:inline-block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+H.esc(r.purpose)+'</span>';}},
+      {label:'Effectivity',render:function(r){return H.fmtDate(r.effectivityStart)+' – '+H.fmtDate(r.effectivityEnd);}},
+      {label:'Notarized',render:function(r){return H.badge(r.notarized,r.notarized==='Yes'?'green':'gray');}},
+      {label:'Status',render:function(r){return H.statusBadge(r.status);}}
+    ],
+    filterFn:function(r,q){return r.school.toLowerCase().includes(q)||r.partnerName.toLowerCase().includes(q)||r.agreementType.toLowerCase().includes(q);},
+    viewFn:function(r){
+      H.modal(H.esc(r.agreementType)+' — '+H.esc(r.partnerName),
+        '<div class="form-section"><div class="form-section-title">School / Office</div><div class="view-detail-grid">'
+        +'<div class="view-detail-row"><span class="view-detail-label">School / Office</span><span class="view-detail-val">'+H.esc(r.school)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Cluster</span><span class="view-detail-val">Cluster '+H.esc(r.cluster)+'</span></div>'
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">Agreement Details</div><div class="view-detail-grid">'
+        +'<div class="view-detail-row"><span class="view-detail-label">Agreement Type</span><span class="view-detail-val">'+H.badge(r.agreementType,'blue')+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Partner Name</span><span class="view-detail-val">'+H.esc(r.partnerName)+'</span></div>'
+        +(r.partnerRep?'<div class="view-detail-row"><span class="view-detail-label">Partner Representative</span><span class="view-detail-val">'+H.esc(r.partnerRep)+'</span></div>':'')
+        +(r.partnerNature?'<div class="view-detail-row"><span class="view-detail-label">Nature of Partner</span><span class="view-detail-val">'+H.esc(r.partnerNature)+'</span></div>':'')
+        +'<div class="view-detail-row"><span class="view-detail-label">Purpose</span><span class="view-detail-val" style="white-space:pre-wrap">'+H.esc(r.purpose)+'</span></div>'
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">Effectivity & Notarization</div><div class="view-detail-grid">'
+        +'<div class="view-detail-row"><span class="view-detail-label">Effectivity Start</span><span class="view-detail-val">'+H.fmtDate(r.effectivityStart)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Effectivity End</span><span class="view-detail-val">'+H.fmtDate(r.effectivityEnd)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Notarized</span><span class="view-detail-val">'+H.badge(r.notarized,r.notarized==='Yes'?'green':'gray')+'</span></div>'
+        +(r.notarizedDate?'<div class="view-detail-row"><span class="view-detail-label">Notarized Date</span><span class="view-detail-val">'+H.fmtDate(r.notarizedDate)+'</span></div>':'')
+        +'<div class="view-detail-row"><span class="view-detail-label">Status</span><span class="view-detail-val">'+H.statusBadge(r.status)+'</span></div>'
+        +'<div class="view-detail-row"><span class="view-detail-label">Date Encoded</span><span class="view-detail-val">'+H.fmtDate(r.createdAt)+'</span></div>'
+        +'</div></div>',
+        function(foot,close){var c=document.createElement('button');c.className='btn btn-secondary';c.textContent='Close';c.onclick=close;foot.appendChild(c);}
+      );
+    },
+    formFn:function(rec,onSave){
+      var isEdit=!!rec;
+      H.modal(isEdit?'Edit Agreement':'Add Agreement',
+        '<div class="form-section"><div class="form-section-title">School / Office</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">School / Office Name <span class="required">*</span></label><input class="form-control" id="ag_school" type="text" value="'+H.esc(rec?rec.school:'')+'"></div>'
+          +'<div class="form-group"><label class="form-label">Cluster</label><select class="form-control" id="ag_cluster">'+H.selOpts(['1','2','3','4','5','6','7','8','9','10'].map(function(c){return 'Cluster '+c;}),rec?'Cluster '+rec.cluster:'Cluster 1')+'</select></div>'
+        +'</div></div>'
+        +'<div class="form-section"><div class="form-section-title">Agreement Details</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">Agreement Type <span class="required">*</span></label><select class="form-control" id="ag_type">'+H.selOpts(['MOA','MOU','DOD','DOA'],rec?rec.agreementType:'MOA')+'</select></div>'
+          +'<div class="form-group"><label class="form-label">Partner Name <span class="required">*</span></label><input class="form-control" id="ag_partner" type="text" value="'+H.esc(rec?rec.partnerName:'')+'"></div>'
+        +'</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">Partner Representative</label><input class="form-control" id="ag_rep" type="text" value="'+H.esc(rec?rec.partnerRep:'')+'"></div>'
+          +'<div class="form-group"><label class="form-label">Nature of Partner</label><select class="form-control" id="ag_nat">'+H.selOpts(natures,rec?rec.partnerNature:'LGU')+'</select></div>'
+        +'</div>'
+        +'<div class="form-group"><label class="form-label">Purpose of Agreement <span class="required">*</span></label><textarea class="form-control" id="ag_purpose" rows="3">'+H.esc(rec?rec.purpose:'')+'</textarea></div>'
+        +'</div>'
+        +'<div class="form-section"><div class="form-section-title">Effectivity & Notarization</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">Effectivity Start</label><input class="form-control" id="ag_start" type="date" value="'+H.esc(rec?rec.effectivityStart:'')+'"></div>'
+          +'<div class="form-group"><label class="form-label">Effectivity End</label><input class="form-control" id="ag_end" type="date" value="'+H.esc(rec?rec.effectivityEnd:'')+'"></div>'
+        +'</div>'
+        +'<div class="form-row">'
+          +'<div class="form-group"><label class="form-label">Notarized?</label><select class="form-control" id="ag_not">'+H.selOpts(['Yes','No'],rec?rec.notarized:'No')+'</select></div>'
+          +'<div class="form-group"><label class="form-label">Notarized Date</label><input class="form-control" id="ag_notd" type="date" value="'+H.esc(rec?rec.notarizedDate:'')+'"></div>'
+          +'<div class="form-group"><label class="form-label">Status</label><select class="form-control" id="ag_status">'+H.selOpts(['Active','Expired','Pending','Cancelled'],rec?rec.status:'Active')+'</select></div>'
+        +'</div></div>',
+        function(foot,close){
+          var c=document.createElement('button');c.className='btn btn-secondary';c.textContent='Cancel';c.onclick=close;
+          var s=document.createElement('button');s.className='btn btn-primary';s.textContent=isEdit?'Save Changes':'Add Agreement';
+          s.onclick=function(){
+            var school=H.val('ag_school').trim(),partner=H.val('ag_partner').trim();
+            if(!school||!partner){H.toast('School and partner name are required.','danger');return;}
+            onSave({school:school,cluster:H.val('ag_cluster').replace('Cluster ',''),agreementType:H.val('ag_type'),partnerName:partner,partnerRep:H.val('ag_rep').trim(),partnerNature:H.val('ag_nat'),purpose:H.val('ag_purpose').trim(),effectivityStart:H.val('ag_start'),effectivityEnd:H.val('ag_end'),notarized:H.val('ag_not'),notarizedDate:H.val('ag_notd'),status:H.val('ag_status'),createdAt:rec?rec.createdAt:new Date().toISOString().slice(0,10)});
+            close();
+          };
+          foot.appendChild(c);foot.appendChild(s);
+        }
+      );
+    }
+  });
+});
+
+
+// ---------- USER MANAGEMENT ------------------------------------
+Router.register('users', function(app){
+  var session=Auth.check(); if(!session) return;
+  if(session.role!=='Admin'){
+    app.innerHTML='<div class="alert alert-danger access-denied"><strong>Access Denied</strong> — Only Administrators can manage users.</div>';
+    return;
+  }
+
+  function render(q){
+    q=q||'';
+    var all=Store.get('users');
+    var rows=q?all.filter(function(u){return u.name.toLowerCase().includes(q)||u.email.toLowerCase().includes(q)||u.school.toLowerCase().includes(q);}):all;
+    app.innerHTML=
+      '<div class="page-header"><div><h1 class="page-title">User Management</h1><p class="page-subtitle">Manage system access — Roles: Admin (full), Editor (create/edit), Viewer (read-only)</p></div>'
+      +'<div><button class="btn btn-primary" id="addUserBtn">+ Add User</button></div></div>'
+      +'<div class="card"><div class="card-header"><span class="card-title">'+rows.length+' user'+(rows.length!==1?'s':'')+'</span>'
+      +'<div class="search-bar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" placeholder="Search users..." id="uSrch" value="'+H.esc(q)+'"></div>'
+      +'</div><div style="padding:0"><div class="table-wrap"><table>'
+      +'<thead><tr><th>Name</th><th>Email</th><th>Role</th><th>School / Office</th><th>Status</th><th>Created</th><th>Actions</th></tr></thead>'
+      +'<tbody>'
+      +(rows.length?rows.map(function(u){
+        return '<tr><td><strong>'+H.esc(u.name)+'</strong></td><td class="td-muted">'+H.esc(u.email)+'</td>'
+          +'<td>'+H.badge(u.role,u.role==='Admin'?'red':u.role==='Editor'?'blue':'gray')+'</td>'
+          +'<td>'+H.esc(u.school)+'</td><td>'+H.statusBadge(u.status)+'</td>'
+          +'<td class="td-muted">'+H.fmtDate(u.createdAt)+'</td>'
+          +'<td style="white-space:nowrap"><button class="btn btn-sm btn-ghost eu" data-id="'+u.id+'">Edit</button>'
+          +'<button class="btn btn-sm btn-ghost text-danger-btn du" data-id="'+u.id+'"'+(u.id===session.userId?' disabled':'')+'>Delete</button></td></tr>';
+      }).join('')
+      :'<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">👥</div><div class="empty-title">No users found</div></div></td></tr>')
+      +'</tbody></table></div></div></div>';
+
+    document.getElementById('addUserBtn').onclick=function(){renderUserForm(null,function(){render(q);});};
+    document.getElementById('uSrch').oninput=function(e){render(e.target.value);};
+    app.querySelectorAll('.eu').forEach(function(btn){
+      btn.onclick=function(){
+        var u=Store.get('users').filter(function(x){return x.id===btn.getAttribute('data-id');})[0];
+        if(u) renderUserForm(u,function(){render(q);});
+      };
+    });
+    app.querySelectorAll('.du').forEach(function(btn){
+      btn.onclick=function(){
+        if(!confirm('Delete this user?')) return;
+        var id=btn.getAttribute('data-id');
+        Store.set('users',Store.get('users').filter(function(x){return x.id!==id;}));
+        H.toast('User deleted.','warning'); render(q);
+      };
+    });
+  }
+
+  function renderUserForm(rec,onSave){
+    var isEdit=!!rec;
+    H.modal(isEdit?'Edit User':'Add User',
+      '<div class="form-section"><div class="form-section-title">Account Details</div>'
+      +'<div class="form-row">'
+        +'<div class="form-group"><label class="form-label">Full Name <span class="required">*</span></label><input class="form-control" id="uf_name" type="text" value="'+H.esc(rec?rec.name:'')+'"></div>'
+        +'<div class="form-group"><label class="form-label">Role <span class="required">*</span></label><select class="form-control" id="uf_role">'+H.selOpts(['Admin','Editor','Viewer'],rec?rec.role:'Viewer')+'</select></div>'
+      +'</div>'
+      +'<div class="form-group"><label class="form-label">Email (DepEd) <span class="required">*</span></label><input class="form-control" id="uf_email" type="email" value="'+H.esc(rec?rec.email:'')+'"></div>'
+      +'<div class="form-group"><label class="form-label">School / Office <span class="required">*</span></label><input class="form-control" id="uf_school" type="text" value="'+H.esc(rec?rec.school:'')+'"></div>'
+      +'<div class="form-row">'
+        +'<div class="form-group"><label class="form-label">'+(isEdit?'New Password (blank = keep)':'Password')+(isEdit?'':'<span class="required">*</span>')+'</label><input class="form-control" id="uf_pw" type="password" placeholder="'+(isEdit?'Leave blank to keep':'Min. 8 characters')+'"></div>'
+        +'<div class="form-group"><label class="form-label">Status</label><select class="form-control" id="uf_status">'+H.selOpts(['Active','Inactive'],rec?rec.status:'Active')+'</select></div>'
+      +'</div></div>',
+      function(foot,close){
+        var c=document.createElement('button');c.className='btn btn-secondary';c.textContent='Cancel';c.onclick=close;
+        var s=document.createElement('button');s.className='btn btn-primary';s.textContent=isEdit?'Save Changes':'Create User';
+        s.onclick=function(){
+          var name=H.val('uf_name').trim(),email=H.val('uf_email').trim(),school=H.val('uf_school').trim(),pw=H.val('uf_pw'),role=H.val('uf_role'),status=H.val('uf_status');
+          if(!name||!email||!school){H.toast('Name, email, and school are required.','danger');return;}
+          if(!isEdit&&pw.length<8){H.toast('Password must be at least 8 characters.','danger');return;}
+          var users=Store.get('users');
+          if(isEdit){
+            for(var i=0;i<users.length;i++) if(users[i].id===rec.id){Object.assign(users[i],{name:name,email:email,school:school,role:role,status:status});if(pw.length>=8)users[i].password=pw;break;}
+          } else {
+            if(users.filter(function(u){return u.email===email;}).length){H.toast('Email already exists.','danger');return;}
+            users.push({id:Store.nextId('u'),name:name,email:email,role:role,school:school,status:status,createdAt:new Date().toISOString().slice(0,10),password:pw});
+          }
+          Store.set('users',users);
+          H.toast(isEdit?'User updated.':'User created.');
+          close(); onSave();
+        };
+        foot.appendChild(c);foot.appendChild(s);
+      }
+    );
+  }
+
+  render();
+});
+
+
+// ---------- BOOT -----------------------------------------------
+try {
+  Store.load();
+  var existingSession = Auth.session();
+  if (existingSession) {
+    renderShell();
+    Router.go('dashboard');
+  } else {
+    Router.go('login');
+  }
+} catch(bootErr) {
+  document.getElementById('root').innerHTML = '<div style="padding:2rem;font-family:sans-serif;color:#dc2626"><strong>Boot error:</strong> ' + bootErr.message + '</div>';
+}
+</script>
+</body>
+</html>
