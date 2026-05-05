@@ -1,0 +1,269 @@
+// CPES — Contextualized Partnership Engagement System
+// SDO Sipalay City · Negros Island Region
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- USERS ----------
+enum Role {
+  Admin
+  Editor
+  Viewer
+}
+
+enum UserStatus {
+  Active
+  Inactive
+}
+
+model User {
+  id           String     @id @default(cuid())
+  name         String
+  email        String     @unique
+  passwordHash String
+  role         Role       @default(Viewer)
+  school       String
+  status       UserStatus @default(Active)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  transmittals   Transmittal[]
+  donations      Donation[]
+  agreements     Agreement[]
+  research       Research[]
+  certifications Certification[]
+  uploadedFiles  UploadedFile[]
+
+  @@index([email])
+}
+
+// ---------- UPLOADED FILES (binary storage) ----------
+model UploadedFile {
+  id          String   @id @default(cuid())
+  filename    String
+  mimeType    String
+  size        Int
+  data        Bytes
+  uploadedBy  String?
+  uploader    User?    @relation(fields: [uploadedBy], references: [id], onDelete: SetNull)
+  createdAt   DateTime @default(now())
+
+  research   Research[]
+  agreements Agreement[]
+}
+
+// ---------- FA1: TRANSMITTAL REPORTS ----------
+enum ContributionType {
+  Cash
+  InKind
+  Service
+  Scholarship
+  Infrastructure
+  Equipment
+  Supplies
+  Other
+}
+
+enum TransmittalStatus {
+  Submitted
+  Validated
+  Pending
+}
+
+model Transmittal {
+  id                  String            @id @default(cuid())
+  school              String
+  cluster             String
+  month               String
+  year                String
+  contributionType    ContributionType
+  numPartners         Int
+  amountContribution  Float
+  numBeneficiaries    Int
+  status              TransmittalStatus @default(Submitted)
+  createdById         String?
+  createdBy           User?             @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+
+  @@index([year, month])
+  @@index([school])
+  @@index([cluster])
+}
+
+// ---------- FA3: DONATION REPORTS ----------
+enum DonorCategory {
+  Internal
+  External
+}
+
+enum DonationType {
+  Cash
+  InKind
+  Service
+  Equipment
+  Supplies
+  ConstructionMaterials
+  Food
+  Medals
+  Books
+  Other
+}
+
+enum DonationStatus {
+  Encoded
+  Validated
+  Utilized
+}
+
+model Donation {
+  id                String         @id @default(cuid())
+  school            String
+  schoolId          String?
+  schoolHead        String?
+  coordinator       String?
+  address           String?
+  contact           String?
+  quarter           String
+  month             String
+  year              String
+  donationType      DonationType
+  amount            Float          @default(0)
+  description       String
+  // Donor categorization
+  donorCategory     DonorCategory
+  donorSubType      String         // e.g. "LGU", "Private Company", "Individual"
+  donorName         String         // Free-text: person name OR company name OR LGU name
+  dateReceived      DateTime?
+  hasMOA            Boolean        @default(false)
+  notarized         Boolean        @default(false)
+  notarizedDate     DateTime?
+  usageDescription  String?
+  status            DonationStatus @default(Encoded)
+  createdById       String?
+  createdBy         User?          @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  @@index([year, quarter])
+  @@index([school])
+  @@index([donorCategory])
+}
+
+// ---------- FA2: RESEARCH & INNOVATION ----------
+enum ResearchType {
+  ActionResearch
+  InnovationPaper
+  CaseStudy
+  PolicyReview
+  Other
+}
+
+enum ResearchStatus {
+  Approved
+  Pending
+  Archived
+}
+
+model Research {
+  id          String         @id @default(cuid())
+  title       String
+  type        ResearchType
+  author      String
+  school      String
+  year        String
+  abstract    String?
+  status      ResearchStatus @default(Approved)
+  fileId      String?
+  file        UploadedFile?  @relation(fields: [fileId], references: [id], onDelete: SetNull)
+  createdById String?
+  createdBy   User?          @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@index([year])
+  @@index([type])
+}
+
+// ---------- FA5: CERTIFICATIONS ----------
+enum CertStatus {
+  Pending
+  Issued
+  Approved
+}
+
+model Certification {
+  id              String     @id @default(cuid())
+  school          String
+  schoolHead      String?
+  partnerName     String
+  amountReceived  Float      @default(0)
+  pointsEarned    Int        @default(0)
+  certDate        DateTime?
+  programYear     String
+  quarter         String
+  hiyas           Boolean    @default(false)
+  status          CertStatus @default(Pending)
+  createdById     String?
+  createdBy       User?      @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  @@index([programYear, quarter])
+}
+
+// ---------- FA6: MOA / MOU / DOD / DOA ----------
+enum AgreementType {
+  MOA
+  MOU
+  DOD
+  DOA
+}
+
+enum PartnerNature {
+  LGU
+  NGO
+  PrivateCompany
+  Individual
+  AcademicInstitution
+  GovernmentAgency
+  Other
+}
+
+enum AgreementStatus {
+  Active
+  Expired
+  Pending
+  Cancelled
+}
+
+model Agreement {
+  id                String          @id @default(cuid())
+  school            String
+  cluster           String
+  agreementType     AgreementType
+  partnerName       String
+  partnerRep        String?
+  partnerNature     PartnerNature
+  purpose           String
+  effectivityStart  DateTime?
+  effectivityEnd    DateTime?
+  notarized         Boolean         @default(false)
+  notarizedDate     DateTime?
+  status            AgreementStatus @default(Active)
+  fileId            String?
+  file              UploadedFile?   @relation(fields: [fileId], references: [id], onDelete: SetNull)
+  createdById       String?
+  createdBy         User?           @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  @@index([school])
+  @@index([agreementType])
+}

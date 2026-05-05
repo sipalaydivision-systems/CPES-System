@@ -33,3 +33,10 @@ yarn-error.log*
 # OS files
 Thumbs.db
 .DS_Store
+
+# Prisma
+server/prisma/migrations/dev.db*
+generated/
+
+# Coverage
+coverage/
