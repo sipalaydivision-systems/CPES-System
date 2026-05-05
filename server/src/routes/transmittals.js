@@ -2,6 +2,7 @@ const express = require('express');
 const { z } = require('zod');
 const prisma = require('../lib/prisma');
 const { crudHandlers, mountCrud } = require('../lib/crud');
+const { schoolScopeWhere } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -20,9 +21,10 @@ const Schema = z.object({
 const handlers = crudHandlers({ model: prisma.transmittal, schema: Schema });
 mountCrud(router, '/', handlers);
 
-// Aggregation: group transmittals by year > month > cluster (for FA4 derived view)
+// Aggregation: group by year > month (auto-scoped to user's school for School users)
 router.get('/aggregate/by-period', async (req, res) => {
-  const all = await prisma.transmittal.findMany({ orderBy: [{ year: 'desc' }, { month: 'asc' }] });
+  const where = schoolScopeWhere(req.user);
+  const all = await prisma.transmittal.findMany({ where, orderBy: [{ year: 'desc' }, { month: 'asc' }] });
   const grouped = {};
   for (const t of all) {
     if (!grouped[t.year]) grouped[t.year] = {};
@@ -35,10 +37,9 @@ router.get('/aggregate/by-period', async (req, res) => {
   res.json(grouped);
 });
 
-// Aggregation by cluster (for FA4 monthly consolidated reports)
 router.get('/aggregate/by-cluster', async (req, res) => {
   const { year, month } = req.query;
-  const where = {};
+  const where = schoolScopeWhere(req.user);
   if (year) where.year = year;
   if (month) where.month = month;
 

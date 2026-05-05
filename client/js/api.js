@@ -52,6 +52,9 @@
     register: (data) => request('POST', '/auth/register', data),
     me: () => request('GET', '/auth/me'),
 
+    // schools directory (public)
+    schools: () => request('GET', '/schools'),
+
     // generic CRUD
     list: (resource) => request('GET', '/' + resource),
     get: (resource, id) => request('GET', `/${resource}/${id}`),

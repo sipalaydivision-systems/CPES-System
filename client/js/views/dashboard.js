@@ -8,8 +8,8 @@
         <!-- Header -->
         <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
           <div>
-            <h1 class="text-2xl font-bold tracking-tight text-ink-900">Welcome back, ${UI.esc(Store.getSession().name.split(' ')[0])}</h1>
-            <p class="text-sm text-ink-500 mt-1">Here is the partnership engagement overview for SDO Sipalay City.</p>
+            <h1 class="text-2xl font-bold tracking-tight text-ink-900">Welcome back, ${UI.esc(Store.getSession().firstName)}</h1>
+            <p class="text-sm text-ink-500 mt-1">${Store.isDivision() ? 'Here is the partnership engagement overview for SDO Sipalay City.' : 'Here is your school\\'s partnership engagement overview.'}</p>
           </div>
           <div class="text-xs text-ink-500 bg-white px-3 py-2 rounded-lg ring-1 ring-ink-100 inline-flex items-center gap-2 self-start">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
@@ -18,12 +18,12 @@
         </div>
 
         <!-- Stat skeleton -->
-        <div id="stats" class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div id="stats" class="grid grid-cols-2 lg:grid-cols-4 gap-4 stagger-children">
           ${[0,1,2,3].map(() => `<div class="bg-white rounded-2xl p-5 shadow-soft ring-1 ring-ink-100"><div class="skeleton h-3 w-16 rounded mb-3"></div><div class="skeleton h-7 w-24 rounded"></div></div>`).join('')}
         </div>
 
         <!-- FA grid skeleton -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="fa-grid">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 stagger-children" id="fa-grid">
           ${[0,1,2,3,4,5].map(() => `<div class="bg-white rounded-2xl p-5 shadow-soft ring-1 ring-ink-100 h-44"><div class="skeleton h-full w-full rounded"></div></div>`).join('')}
         </div>
       </div>

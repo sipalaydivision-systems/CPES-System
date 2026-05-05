@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Role" AS ENUM ('Admin', 'Editor', 'Viewer');
+CREATE TYPE "RegistrationType" AS ENUM ('Division', 'School');
 
 -- CreateEnum
 CREATE TYPE "UserStatus" AS ENUM ('Active', 'Inactive');
@@ -40,10 +40,13 @@ CREATE TYPE "AgreementStatus" AS ENUM ('Active', 'Expired', 'Pending', 'Cancelle
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "firstName" TEXT NOT NULL,
+    "middleName" TEXT,
+    "lastName" TEXT NOT NULL,
+    "suffix" TEXT,
     "email" TEXT NOT NULL,
     "passwordHash" TEXT NOT NULL,
-    "role" "Role" NOT NULL DEFAULT 'Viewer',
+    "registrationType" "RegistrationType" NOT NULL,
     "school" TEXT NOT NULL,
     "status" "UserStatus" NOT NULL DEFAULT 'Active',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -183,6 +186,9 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE INDEX "User_email_idx" ON "User"("email");
 
 -- CreateIndex
+CREATE INDEX "User_registrationType_school_idx" ON "User"("registrationType", "school");
+
+-- CreateIndex
 CREATE INDEX "Transmittal_year_month_idx" ON "Transmittal"("year", "month");
 
 -- CreateIndex
@@ -207,7 +213,13 @@ CREATE INDEX "Research_year_idx" ON "Research"("year");
 CREATE INDEX "Research_type_idx" ON "Research"("type");
 
 -- CreateIndex
+CREATE INDEX "Research_school_idx" ON "Research"("school");
+
+-- CreateIndex
 CREATE INDEX "Certification_programYear_quarter_idx" ON "Certification"("programYear", "quarter");
+
+-- CreateIndex
+CREATE INDEX "Certification_school_idx" ON "Certification"("school");
 
 -- CreateIndex
 CREATE INDEX "Agreement_school_idx" ON "Agreement"("school");
@@ -238,3 +250,4 @@ ALTER TABLE "Agreement" ADD CONSTRAINT "Agreement_fileId_fkey" FOREIGN KEY ("fil
 
 -- AddForeignKey
 ALTER TABLE "Agreement" ADD CONSTRAINT "Agreement_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+

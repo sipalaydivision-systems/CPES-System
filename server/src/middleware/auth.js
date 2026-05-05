@@ -5,7 +5,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'cpes-dev-secret-change-me';
 
 function signToken(user) {
   return jwt.sign(
-    { userId: user.id, role: user.role, email: user.email },
+    { userId: user.id, registrationType: user.registrationType, email: user.email },
     JWT_SECRET,
     { expiresIn: '7d' }
   );
@@ -28,17 +28,40 @@ async function requireAuth(req, res, next) {
   }
 }
 
-function requireRole(...roles) {
-  return (req, res, next) => {
-    if (!req.user) return res.status(401).json({ error: { code: 'NO_USER' } });
-    if (!roles.includes(req.user.role)) {
-      return res.status(403).json({ error: { code: 'FORBIDDEN', message: 'Insufficient role.' } });
-    }
-    next();
-  };
+function requireDivision(req, res, next) {
+  if (!req.user) return res.status(401).json({ error: { code: 'NO_USER' } });
+  if (req.user.registrationType !== 'Division') {
+    return res.status(403).json({ error: { code: 'FORBIDDEN', message: 'Division-level access required.' } });
+  }
+  next();
 }
 
-function canEdit(role) { return role === 'Admin' || role === 'Editor'; }
-function canDelete(role) { return role === 'Admin'; }
+// Helpers used by route handlers
+function isDivision(user) { return user && user.registrationType === 'Division'; }
+function isSchool(user) { return user && user.registrationType === 'School'; }
 
-module.exports = { signToken, requireAuth, requireRole, canEdit, canDelete, JWT_SECRET };
+// Returns a where-clause fragment that scopes records to the user's school
+// for School users. Division users see everything (returns {}).
+function schoolScopeWhere(user) {
+  if (isDivision(user)) return {};
+  return { school: user.school };
+}
+
+// Enforces school field on writes for School users (cannot assign records to other schools)
+function enforceSchoolOnWrite(user, data) {
+  if (isSchool(user)) {
+    return { ...data, school: user.school };
+  }
+  return data;
+}
+
+module.exports = {
+  signToken,
+  requireAuth,
+  requireDivision,
+  isDivision,
+  isSchool,
+  schoolScopeWhere,
+  enforceSchoolOnWrite,
+  JWT_SECRET
+};

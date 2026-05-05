@@ -12,6 +12,7 @@ const agreementsRoutes = require('./routes/agreements');
 const certificationsRoutes = require('./routes/certifications');
 const usersRoutes = require('./routes/users');
 const filesRoutes = require('./routes/files');
+const schoolsRoutes = require('./routes/schools');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -24,8 +25,9 @@ app.use(express.urlencoded({ extended: true, limit: '6mb' }));
 // Health
 app.get('/api/health', (req, res) => res.json({ ok: true, time: new Date().toISOString() }));
 
-// Public auth
+// Public auth + schools (schools list needed for registration form)
 app.use('/api/auth', authRoutes);
+app.use('/api/schools', schoolsRoutes);
 
 // Protected
 app.use('/api/transmittals', requireAuth, transmittalsRoutes);

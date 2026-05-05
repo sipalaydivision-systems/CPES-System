@@ -184,7 +184,17 @@
       <div class="space-y-5">
         ${UI.fieldGroup('School / Office',
           UI.row2(
-            UI.field('School / Office Name', UI.input('a_school', { value: rec ? rec.school : '' }), null, true),
+            UI.field('School / Office Name', (function(){
+              const lock = Store.isSchool();
+              const initial = rec ? rec.school : (lock ? Store.getSession().school : '');
+              return lock
+                ? `<div class="px-3 py-2 text-sm bg-ink-50 border border-ink-100 rounded-lg text-ink-700 font-medium flex items-center gap-2">
+                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-ink-400 flex-shrink-0"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                     ${UI.esc(initial)}
+                     <input type="hidden" id="a_school" value="${UI.esc(initial)}">
+                   </div>`
+                : UI.input('a_school', { value: initial });
+            })(), Store.isSchool() ? 'Locked to your school' : null, true),
             UI.field('Cluster', UI.select('a_cluster', CLUSTERS.map(c => ({ value: c, label: 'Cluster ' + c })), rec ? rec.cluster : '1'), null, true)
           )
         )}

@@ -11,10 +11,12 @@ datasource db {
 }
 
 // ---------- USERS ----------
-enum Role {
-  Admin
-  Editor
-  Viewer
+// RegistrationType determines data scope:
+//   - Division: SDO personnel — sees ALL schools' data
+//   - School:   School-based personnel — sees ONLY their own school's data
+enum RegistrationType {
+  Division
+  School
 }
 
 enum UserStatus {
@@ -23,15 +25,23 @@ enum UserStatus {
 }
 
 model User {
-  id           String     @id @default(cuid())
-  name         String
-  email        String     @unique
+  id           String           @id @default(cuid())
+  // Quantized name parts
+  firstName    String
+  middleName   String?
+  lastName     String
+  suffix       String?
+  // Auth
+  email        String           @unique
   passwordHash String
-  role         Role       @default(Viewer)
+  // Scope
+  registrationType RegistrationType
+  // For School users: their assigned school name (from canonical list)
+  // For Division users: typically "SDO Sipalay City" or specific division office (OSDS/SGOD)
   school       String
-  status       UserStatus @default(Active)
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  status       UserStatus       @default(Active)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
 
   transmittals   Transmittal[]
   donations      Donation[]
@@ -41,6 +51,7 @@ model User {
   uploadedFiles  UploadedFile[]
 
   @@index([email])
+  @@index([registrationType, school])
 }
 
 // ---------- UPLOADED FILES (binary storage) ----------
@@ -136,10 +147,9 @@ model Donation {
   donationType      DonationType
   amount            Float          @default(0)
   description       String
-  // Donor categorization
   donorCategory     DonorCategory
-  donorSubType      String         // e.g. "LGU", "Private Company", "Individual"
-  donorName         String         // Free-text: person name OR company name OR LGU name
+  donorSubType      String
+  donorName         String
   dateReceived      DateTime?
   hasMOA            Boolean        @default(false)
   notarized         Boolean        @default(false)
@@ -189,6 +199,7 @@ model Research {
 
   @@index([year])
   @@index([type])
+  @@index([school])
 }
 
 // ---------- FA5: CERTIFICATIONS ----------
@@ -216,6 +227,7 @@ model Certification {
   updatedAt       DateTime   @updatedAt
 
   @@index([programYear, quarter])
+  @@index([school])
 }
 
 // ---------- FA6: MOA / MOU / DOD / DOA ----------

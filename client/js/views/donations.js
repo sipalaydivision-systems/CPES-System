@@ -212,11 +212,21 @@
       return DONOR_TIERS[category].find(s => s.value === subType) || DONOR_TIERS[category][0];
     }
 
+    const lockSchool = Store.isSchool();
+    const initialSchool = rec ? rec.school : (lockSchool ? Store.getSession().school : '');
+    const schoolField = lockSchool
+      ? `<div class="px-3 py-2 text-sm bg-ink-50 border border-ink-100 rounded-lg text-ink-700 font-medium flex items-center gap-2">
+           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-ink-400 flex-shrink-0"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+           ${UI.esc(initialSchool)}
+           <input type="hidden" id="d_school" value="${UI.esc(initialSchool)}">
+         </div>`
+      : UI.input('d_school', { value: initialSchool });
+
     const body = `
       <div class="space-y-5">
         ${UI.fieldGroup('School Information',
           UI.row2(
-            UI.field('Name of School', UI.input('d_school', { value: rec ? rec.school : '' }), null, true),
+            UI.field('Name of School', schoolField, lockSchool ? 'Locked to your assigned school' : null, true),
             UI.field('School ID', UI.input('d_sid', { value: rec ? (rec.schoolId || '') : '' }))
           ) +
           UI.row2(
