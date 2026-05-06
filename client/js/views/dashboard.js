@@ -9,7 +9,7 @@
         <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
           <div>
             <h1 class="text-2xl font-bold tracking-tight text-ink-900">Welcome back, ${UI.esc(Store.getSession().firstName)}</h1>
-            <p class="text-sm text-ink-500 mt-1">${Store.isDivision() ? 'Here is the partnership engagement overview for SDO Sipalay City.' : 'Here is your school\\'s partnership engagement overview.'}</p>
+            <p class="text-sm text-ink-500 mt-1">${Store.isDivision() ? 'Here is the partnership engagement overview for SDO Sipalay City.' : "Here is your school's partnership engagement overview."}</p>
           </div>
           <div class="text-xs text-ink-500 bg-white px-3 py-2 rounded-lg ring-1 ring-ink-100 inline-flex items-center gap-2 self-start">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
