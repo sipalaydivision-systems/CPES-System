@@ -5,8 +5,20 @@
     current: null,
     register(name, fn) { this.routes[name] = fn; },
     async go(name, params) {
-      const fn = this.routes[name];
-      if (!fn) { console.error('No route:', name); return; }
+      let fn = this.routes[name];
+      if (!fn) {
+        console.error('No route:', name);
+        UI.toast('Page failed to load — please refresh the browser.', 'error');
+        // If we are mid-redirect after auth and the destination is missing,
+        // bounce back to login rather than leaving the user stranded.
+        if (name !== 'login' && this.routes.login) {
+          Store.clearSession();
+          fn = this.routes.login;
+          name = 'login';
+        } else {
+          return;
+        }
+      }
       this.current = name;
 
       const isAuthRoute = name === 'login' || name === 'register';
